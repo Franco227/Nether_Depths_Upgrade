@@ -21,11 +21,21 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
 import java.util.function.Predicate;
 
-public class LavaPufferfishEntity extends AbstractLavaFish {
+public class LavaPufferfishEntity extends AbstractLavaFish implements GeoEntity {
+    public static final RawAnimation MOVING_PUFFERFISH = RawAnimation.begin().thenLoop("animation.pufferfish.swim");
+
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+
     private static final EntityDataAccessor<Integer> PUFF_STATE = SynchedEntityData.defineId(LavaPufferfishEntity.class, EntityDataSerializers.INT);
     int inflateCounter;
     int deflateTimer;
@@ -193,6 +203,16 @@ public class LavaPufferfishEntity extends AbstractLavaFish {
         }
     }
 
+
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "pufferfish.moving", 0, state -> state.setAndContinue(MOVING_PUFFERFISH)));
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
+
     static class PufferfishPuffGoal extends Goal {
         private final LavaPufferfishEntity fish;
 
@@ -227,3 +247,4 @@ public class LavaPufferfishEntity extends AbstractLavaFish {
         }
     }
 }
+

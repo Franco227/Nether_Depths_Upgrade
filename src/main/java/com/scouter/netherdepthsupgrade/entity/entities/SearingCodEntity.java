@@ -10,9 +10,16 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.animatable.GeoEntity;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
+import software.bernie.geckolib.core.animation.AnimationController;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class SearingCodEntity extends AbstractLavaSchoolingFish {
-
+public class SearingCodEntity extends AbstractLavaSchoolingFish implements GeoEntity {
+    public static final RawAnimation MOVING_COD = RawAnimation.begin().thenLoop("animation.searingcod.swim");
+    private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
     public SearingCodEntity(EntityType<? extends AbstractLavaSchoolingFish> p_27523_, Level p_27524_) {
         super(p_27523_, p_27524_);
     }
@@ -41,5 +48,12 @@ public class SearingCodEntity extends AbstractLavaSchoolingFish {
     protected SoundEvent getFlopSound() {
         return SoundEvents.PLAYER_HURT_ON_FIRE;
     }
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        controllers.add(new AnimationController<>(this, "cod.moving", 0, state -> state.setAndContinue(MOVING_COD)));
+    }
 
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return cache;
+    }
 }

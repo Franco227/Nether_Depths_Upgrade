@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 @Environment(EnvType.CLIENT)
 @Mixin(FogRenderer.class)
 public class ScreenFogEffect {
-    @Inject(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderFogStart(F)V", shift = At.Shift.BEFORE), method = "setupFog", locals = LocalCapture.CAPTURE_FAILHARD, remap = false)
+    @Inject(at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/systems/RenderSystem;setShaderFogStart(F)V", shift = At.Shift.BEFORE), method = "setupFog", locals = LocalCapture.CAPTURE_FAILHARD)
     private static void setupFog(Camera camera, FogRenderer.FogMode fogType, float viewDistance, boolean thickFog, float tickDelta, CallbackInfo ci, FogType cameraSubmersionType, Entity entity, FogRenderer.FogData fogParameters) {
         if (cameraSubmersionType == FogType.LAVA) {
             if (entity instanceof LivingEntity livingEntity && livingEntity.hasEffect(MobEffects.LAVA_VISION)) {
