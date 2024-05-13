@@ -7,4 +7,5 @@ public class LavaVisionEffect extends MobEffect {
     protected LavaVisionEffect(MobEffectCategory p_19451_, int p_19452_) {
         super(p_19451_, p_19452_);
     }
+
 }

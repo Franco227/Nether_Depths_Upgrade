@@ -12,8 +12,13 @@
 			},
 			"bones": [
 				{
-					"name": "bb_main",
-					"pivot": [0, 0, 0],
+					"name": "root",
+					"pivot": [0, 6, 0]
+				},
+				{
+					"name": "Body",
+					"parent": "root",
+					"pivot": [0, 6, 0],
 					"cubes": [
 						{
 							"origin": [-5, 1, -5],
@@ -26,7 +31,14 @@
 								"up": {"uv": [22, 32], "uv_size": [20, 20]},
 								"down": {"uv": [22, 76], "uv_size": [20, 20]}
 							}
-						},
+						}
+					]
+				},
+				{
+					"name": "EyeLayer",
+					"parent": "Body",
+					"pivot": [0, 6, 0],
+					"cubes": [
 						{
 							"origin": [-5.5, 0.5, -5],
 							"size": [11, 0, 10.5],
@@ -97,12 +109,13 @@
 				},
 				{
 					"name": "TailFront",
-					"pivot": [0, 5.5, 5.5],
+					"parent": "Body",
+					"pivot": [0, 6, 5.5],
 					"cubes": [
 						{
-							"origin": [0, 2, 5.5],
+							"origin": [0, 2.5, 5.5],
 							"size": [0, 7, 16],
-							"pivot": [0, 5.5, 18.5],
+							"pivot": [0, 6, 18.5],
 							"rotation": [0, 0, 135],
 							"uv": {
 								"north": {"uv": [66, 22], "uv_size": [0, 7]},
@@ -114,9 +127,9 @@
 							}
 						},
 						{
-							"origin": [0, 2, 5.5],
+							"origin": [0, 2.5, 5.5],
 							"size": [0, 7, 16],
-							"pivot": [0, 5.5, 18.5],
+							"pivot": [0, 6, 18.5],
 							"rotation": [0, 0, 45],
 							"uv": {
 								"north": {"uv": [20, 104], "uv_size": [0, 7]},
@@ -132,12 +145,12 @@
 				{
 					"name": "TailBack",
 					"parent": "TailFront",
-					"pivot": [0, 5.5, 21.5],
+					"pivot": [0, 6, 21.5],
 					"cubes": [
 						{
-							"origin": [0, 2, 21.5],
+							"origin": [0, 2.5, 21.5],
 							"size": [0, 7, 10],
-							"pivot": [0, 5.5, 34.5],
+							"pivot": [0, 6, 34.5],
 							"rotation": [0, 0, 135],
 							"uv": {
 								"north": {"uv": [34, 116], "uv_size": [0, 7]},
@@ -149,9 +162,9 @@
 							}
 						},
 						{
-							"origin": [0, 2, 21.5],
+							"origin": [0, 2.5, 21.5],
 							"size": [0, 7, 10],
-							"pivot": [0, 5.5, 34.5],
+							"pivot": [0, 6, 34.5],
 							"rotation": [0, 0, 45],
 							"uv": {
 								"north": {"uv": [28, 114], "uv_size": [0, 7]},

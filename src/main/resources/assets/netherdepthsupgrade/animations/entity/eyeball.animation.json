@@ -2,21 +2,28 @@
 	"format_version": "1.8.0",
 	"animations": {
 		"eyeball.move": {
-			"animation_length": 0.48,
+			"loop": true,
+			"animation_length": 8,
 			"bones": {
 				"TailFront": {
-					"rotation": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"0.48": {
-							"vector": [0, 0, 360],
-							"easing": "linear"
-						}
-					}
+					"rotation": [0, 0, "query.anim_time*720"],
+					"scale": [1, 1, "1+math.sin(query.anim_time*360-30)*-0.2"]
+				},
+				"Body": {
+					"rotation": [0, 0, "query.anim_time*-45"],
+					"scale": ["1.05+math.sin(query.anim_time*360)*0.05", "1.05+math.sin(query.anim_time*360+90)*-0.05", "1.1+math.sin(query.anim_time*360)*-0.1"]
+				},
+				"TailBack": {
+					"scale": [1, 1, "1+math.sin(query.anim_time*360-60)*-0.2"]
+				},
+				"root": {
+					"rotation": ["math.sin(query.anim_time*45+60)*-2.5", 0, 0],
+					"position": ["math.sin(query.anim_time*180-90)*0.5", "2+math.sin(query.anim_time*45)*2", "math.sin(query.anim_time*90)*1"]
+				},
+				"EyeLayer": {
+					"scale": ["1.05+math.sin(query.anim_time*360)*0.05", "1.05+math.sin(query.anim_time*360+90)*-0.05", "1.1+math.sin(query.anim_time*360)*-0.1"]
 				}
 			}
 		}
-	},
-	"geckolib_format_version": 2
+	}
 }
