@@ -1,4 +1,4 @@
-/*package com.scouter.netherdepthsupgrade.integration.jei;
+package com.scouter.netherdepthsupgrade.integration.jei;/*package com.scouter.netherdepthsupgrade.integration.jei;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;

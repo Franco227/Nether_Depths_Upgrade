@@ -1,4 +1,4 @@
-package com.scouter.netherdepthsupgrade.modcompat;
+/*package com.scouter.netherdepthsupgrade.modcompat;
 
 import com.mojang.logging.LogUtils;
 import com.scouter.netherdepthsupgrade.items.NDUFoods;
@@ -47,3 +47,4 @@ public class InfernalExpansionCompat {
             .effect( () ->new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 800, 1), 0.5F)
             .build();
 }
+*/

@@ -2,15 +2,17 @@ package com.scouter.netherdepthsupgrade.creativetabs;
 
 import com.scouter.netherdepthsupgrade.NetherDepthsUpgrade;
 import com.scouter.netherdepthsupgrade.items.NDUItems;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.neoforged.neoforge.registries.DeferredHolder;
+import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class NDUTabs {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, NetherDepthsUpgrade.MODID);
@@ -77,18 +79,24 @@ public class NDUTabs {
                 entries.accept(NDUItems.SOUL_SUCKER_LEATHER.get());
                 entries.accept(NDUItems.FORTRESS_GROUPER_PLATE.get());
                 entries.accept(NDUItems.EYEBALL_FISH_EYE.get());
-                generateEnchantsForBoots(entries, NDUItems.SOUL_SUCKER_BOOTS.get(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+                d.holders().lookup(Registries.ENCHANTMENT).ifPresent(enchantmentRegistryLookup -> {
+                    generateEnchantsForBoots(entries, enchantmentRegistryLookup,NDUItems.SOUL_SUCKER_BOOTS.get(), CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+                });
                 entries.accept(NDUItems.LAVA_FISHING_ROD.get());
             })
             .build();
 
 
-    public static final RegistryObject<CreativeModeTab> NDU_TAB = TABS.register("netherdepthsupgrade", () -> NDU);
-    public static final RegistryObject<CreativeModeTab> NDU_FISH_TAB = TABS.register("netherdepthsupgrade_fish", () -> NDU_FISH);
+    public static final DeferredHolder<CreativeModeTab, ?> NDU_TAB = TABS.register("netherdepthsupgrade", () -> NDU);
+    public static final DeferredHolder<CreativeModeTab, ?> NDU_FISH_TAB = TABS.register("netherdepthsupgrade_fish", () -> NDU_FISH);
 
-    private static void generateEnchantsForBoots(CreativeModeTab.Output output, Item item, CreativeModeTab.TabVisibility tabVisibility) {
+    private static void generateEnchantsForBoots(CreativeModeTab.Output output, HolderLookup<Enchantment> lookup, Item item, CreativeModeTab.TabVisibility tabVisibility) {
         ItemStack soulsuckerBoots = new ItemStack(item);
-        soulsuckerBoots.enchant(Enchantments.SOUL_SPEED, 3);
+        lookup.get(Enchantments.SOUL_SPEED).ifPresent(e -> {
+            soulsuckerBoots.enchant(e, 3);
+        });
         output.accept(soulsuckerBoots, tabVisibility);
     }
 }

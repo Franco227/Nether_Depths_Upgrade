@@ -13,7 +13,6 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
-import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -21,7 +20,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import java.util.Optional;
 
 public abstract class GrowingLavaPlantBodyBlock extends GrowingLavaPlantBlock implements BonemealableBlock {
-    protected GrowingLavaPlantBodyBlock(BlockBehaviour.Properties p_53886_, Direction p_53887_, VoxelShape p_53888_, boolean p_53889_) {
+    protected GrowingLavaPlantBodyBlock(Properties p_53886_, Direction p_53887_, VoxelShape p_53888_, boolean p_53889_) {
         super(p_53886_, p_53887_, p_53888_, p_53889_);
     }
 
@@ -59,7 +58,7 @@ public abstract class GrowingLavaPlantBodyBlock extends GrowingLavaPlantBlock im
     /**
      * @return whether bonemeal can be used on this block
      */
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
+    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
         Optional<BlockPos> optional = this.getHeadPos(pLevel, pPos, pState.getBlock());
         return optional.isPresent() && this.getHeadBlock().canGrowInto(pLevel.getBlockState(optional.get().relative(this.growthDirection)));
     }

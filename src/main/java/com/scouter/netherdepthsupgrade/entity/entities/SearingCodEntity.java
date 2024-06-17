@@ -10,11 +10,12 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 public class SearingCodEntity extends AbstractLavaSchoolingFish implements GeoEntity {
@@ -50,7 +51,7 @@ public class SearingCodEntity extends AbstractLavaSchoolingFish implements GeoEn
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "cod.moving", 0, state -> state.setAndContinue(MOVING_COD)));
+        controllers.add(new AnimationController<GeoAnimatable>(this, "cod.moving", 0, state -> state.setAndContinue(MOVING_COD)));
     }
 
     @Override

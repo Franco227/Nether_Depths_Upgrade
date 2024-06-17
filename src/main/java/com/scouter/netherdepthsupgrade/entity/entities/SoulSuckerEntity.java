@@ -22,11 +22,12 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
 import org.slf4j.Logger;
+import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import javax.annotation.Nullable;
@@ -82,11 +83,11 @@ public class SoulSuckerEntity extends AbstractLavaFish implements GeoEntity {
     }
 
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD.get();
+        return SoundEvents.AMBIENT_SOUL_SAND_VALLEY_MOOD.value();
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.SOUL_ESCAPE;
+        return SoundEvents.SOUL_ESCAPE.value();
     }
 
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
@@ -98,7 +99,7 @@ public class SoulSuckerEntity extends AbstractLavaFish implements GeoEntity {
     }
 
     public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-        controllers.add(new AnimationController<>(this, "soulsucker.moving", 0,state -> state.setAndContinue(MOVING_SOULSUCKER)));
+        controllers.add(new AnimationController<GeoAnimatable>(this, "soulsucker.moving", 0, state -> state.setAndContinue(MOVING_SOULSUCKER)));
     }
 
     @Override
@@ -106,13 +107,15 @@ public class SoulSuckerEntity extends AbstractLavaFish implements GeoEntity {
         return this.cache;
     }
 
-
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SOULSAND_POS, BlockPos.ZERO);
-        this.entityData.define(SEEK_SOULSAND_TIMER, 0);
-        this.entityData.define(COOLDOWN_TTIMER, 0);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
+        super.defineSynchedData(pBuilder);
+        pBuilder.define(SOULSAND_POS, BlockPos.ZERO);
+        pBuilder.define(SEEK_SOULSAND_TIMER, 0);
+        pBuilder.define(COOLDOWN_TTIMER, 0);
     }
+
+
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);

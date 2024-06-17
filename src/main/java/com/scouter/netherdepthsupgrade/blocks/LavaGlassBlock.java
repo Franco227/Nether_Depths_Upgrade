@@ -1,5 +1,6 @@
 package com.scouter.netherdepthsupgrade.blocks;
 
+import com.mojang.serialization.MapCodec;
 import com.scouter.netherdepthsupgrade.blocks.entity.LavaGlassBlockEntity;
 import com.scouter.netherdepthsupgrade.blocks.entity.NDUBlockEntities;
 import net.minecraft.core.BlockPos;
@@ -36,8 +37,15 @@ public class LavaGlassBlock extends BaseEntityBlock {
         put(Direction.SOUTH, SHAPE_SOUTH);
         put(Direction.WEST, SHAPE_WEST);
     }};
+
+    public static final MapCodec<LavaGlassBlock> CODEC = simpleCodec(LavaGlassBlock::new);
     public LavaGlassBlock(Properties p_53970_) {
         super(p_53970_);
+    }
+
+    @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return CODEC;
     }
 
     @Override

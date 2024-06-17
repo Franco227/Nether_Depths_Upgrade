@@ -3,12 +3,15 @@ package com.scouter.netherdepthsupgrade.events;
 import com.mojang.logging.LogUtils;
 import com.scouter.netherdepthsupgrade.NetherDepthsUpgrade;
 import com.scouter.netherdepthsupgrade.config.NetherDepthsUpgradeConfig;
+import com.scouter.netherdepthsupgrade.datacomponents.NDUDataComponents;
 import com.scouter.netherdepthsupgrade.enchantments.NDUEnchantments;
 import com.scouter.netherdepthsupgrade.entity.NDUEntity;
 import com.scouter.netherdepthsupgrade.entity.entities.LavaFishingBobberEntity;
 import com.scouter.netherdepthsupgrade.items.NDUItems;
+import com.scouter.netherdepthsupgrade.potion.NDUPotions;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -27,37 +30,59 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.FishingHook;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.alchemy.PotionBrewing;
+import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.Vec3;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.player.ItemFishedEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
+import net.neoforged.neoforge.event.entity.player.ItemFishedEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import org.slf4j.Logger;
 
 import java.util.List;
 
-@Mod.EventBusSubscriber(modid = NetherDepthsUpgrade.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@EventBusSubscriber(modid = NetherDepthsUpgrade.MODID, bus = EventBusSubscriber.Bus.GAME)
 public class ForgeEvents {
     private static final Logger LOGGER = LogUtils.getLogger();
 
+
     @SubscribeEvent
-    public static void lavaMovementSpeed(TickEvent.PlayerTickEvent event) {
-        if (event.player == null || event.player.isCreative() || event.player.isSpectator()) {
+    public static void registerBrewingRecipes(RegisterBrewingRecipesEvent event) {
+        addMixes(event.getBuilder());
+    }
+
+    public static void addMixes(PotionBrewing.Builder builder) {
+        builder.addMix(Potions.AWKWARD, NDUItems.LAVA_PUFFERFISH.get(), NDUPotions.WITHER.getDelegate());
+        builder.addMix(Potions.AWKWARD, NDUItems.EYEBALL_FISH_EYE.get(), NDUPotions.LAVA_VISION.getDelegate());
+        builder.addMix(Potions.AWKWARD, NDUItems.EYEBALL_FISH.get(), NDUPotions.LAVA_VISION.getDelegate());
+        builder.addMix(Potions.AWKWARD, NDUItems.OBSIDIANFISH.get(), NDUPotions.RESISTANCE.getDelegate());
+        builder.addMix(Potions.AWKWARD, NDUItems.GLOWDINE.get(), NDUPotions.GLOWING.getDelegate());
+        builder.addMix(NDUPotions.GLOWING.getDelegate(), Items.REDSTONE, NDUPotions.LONG_GLOWING.getDelegate());
+        builder.addMix(NDUPotions.RESISTANCE.getDelegate(), Items.REDSTONE, NDUPotions.LONG_RESISTANCE.getDelegate());
+        builder.addMix(NDUPotions.RESISTANCE.getDelegate(), Items.GLOWSTONE_DUST, NDUPotions.STRONG_RESISTANCE.getDelegate());
+        builder.addMix(Potions.AWKWARD, NDUItems.LAVA_PUFFERFISH.get(), NDUPotions.WITHER.getDelegate());
+        builder.addMix(NDUPotions.LAVA_VISION.getDelegate(), Items.REDSTONE, NDUPotions.LONG_LAVA_VISION.getDelegate());
+
+    }
+
+    @SubscribeEvent
+    public static void lavaMovementSpeed(PlayerTickEvent.Post event) {
+        if (event.getEntity() == null || event.getEntity().isCreative() || event.getEntity().isSpectator()) {
             return;
         }
         double d0 = 0.000D;
-        boolean flag = event.player.getDeltaMovement().y <= 0.0D;
-        if (flag && event.player.hasEffect(MobEffects.SLOW_FALLING)) {
+        boolean flag = event.getEntity().getDeltaMovement().y <= 0.0D;
+        if (flag && event.getEntity().hasEffect(MobEffects.SLOW_FALLING)) {
             d0 = 0.01;
         }
-
-        if (EnchantmentHelper.getEnchantments(event.player.getItemBySlot(EquipmentSlot.FEET)).containsKey(NDUEnchantments.HELL_STRIDER.get())) {
-            double level = EnchantmentHelper.getEnchantments(event.player.getItemBySlot(EquipmentSlot.FEET)).get(NDUEnchantments.HELL_STRIDER.get());
-            Player player = event.player;
+        if (EnchantmentHelper.has(event.getEntity().getItemBySlot(EquipmentSlot.FEET), NDUDataComponents.HAS_HELL_STRIDER.get())) {
+            Player player = event.getEntity();
+            int level = getHellStriderLevel(player);
             BlockPos eyePos = new BlockPos((int) player.getEyePosition().x(), (int) player.getEyePosition().y(), (int) player.getEyePosition().z());
             FluidState state = player.level().getFluidState(eyePos);
             if (player.isInLava() && player.isAffectedByFluids() && state.is(FluidTags.LAVA)) {
@@ -67,7 +92,7 @@ public class ForgeEvents {
                 player.setDeltaMovement(player.getDeltaMovement().multiply(speed, 0.8F, speed));
                 Vec3 vec33 = player.getFluidFallingAdjustedMovement(d0, flag, player.getDeltaMovement());
                 player.setDeltaMovement(vec33);
-                if(player.isShiftKeyDown()){
+                if (player.isShiftKeyDown()) {
                     player.setDeltaMovement(vec33.x, -0.075000001192092896 * level, vec33.z);
                 }
 
@@ -77,6 +102,15 @@ public class ForgeEvents {
             }
         }
     }
+
+    private static int getHellStriderLevel(Player entity) {
+        return entity.registryAccess()
+                .registry(Registries.ENCHANTMENT)
+                .flatMap(e -> e.getHolder(NDUEnchantments.HELL_STRIDER))
+                .map(d -> EnchantmentHelper.getEnchantmentLevel(d, entity))
+                .orElse(0);
+    }
+
 
     @SubscribeEvent
     public static void changeFish(ItemFishedEvent event) {
@@ -133,7 +167,7 @@ public class ForgeEvents {
                     event.getEntity().level().addFreshEntity(itementity);
                     fisher.level().addFreshEntity(new ExperienceOrb(fisher.level(), fisher.getX(), fisher.getY() + 0.5D, fisher.getZ() + 0.5D, bobber.level().random.nextInt(6) + 1));
 
-                    CriteriaTriggers.FISHING_ROD_HOOKED.trigger((ServerPlayer)fisher, itemstack, bobber,  drops);
+                    CriteriaTriggers.FISHING_ROD_HOOKED.trigger((ServerPlayer) fisher, itemstack, bobber, drops);
                     if (itemstack.is(ItemTags.FISHES)) {
                         fisher.awardStat(Stats.FISH_CAUGHT, 1);
                     }
@@ -150,7 +184,7 @@ public class ForgeEvents {
                 double mult = 0.12;
                 entity.setDeltaMovement(dX * mult, dY * mult + Math.sqrt(Math.sqrt(dX * dX + dY * dY + dZ * dZ)) * 0.14D, dZ * mult);
                 event.getEntity().level().addFreshEntity(entity);
-                CriteriaTriggers.FISHING_ROD_HOOKED.trigger((ServerPlayer)fisher, itemstack, bobber,  drops);
+                CriteriaTriggers.FISHING_ROD_HOOKED.trigger((ServerPlayer) fisher, itemstack, bobber, drops);
                 if (itemstack.is(ItemTags.FISHES)) {
                     fisher.awardStat(Stats.FISH_CAUGHT, 1);
                 }

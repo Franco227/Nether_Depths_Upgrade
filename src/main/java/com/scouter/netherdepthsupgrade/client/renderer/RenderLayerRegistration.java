@@ -10,7 +10,6 @@ public class RenderLayerRegistration {
         RenderType cutoutMipped = RenderType.cutoutMipped();
         RenderType cutout = RenderType.cutout();
         RenderType translucent = RenderType.translucent();
-        RenderType translucentnocrumb = RenderType.translucentNoCrumbling();
         RenderType solid = RenderType.solid();
 
 

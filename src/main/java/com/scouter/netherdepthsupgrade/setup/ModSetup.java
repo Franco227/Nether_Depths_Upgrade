@@ -1,48 +1,57 @@
 package com.scouter.netherdepthsupgrade.setup;
 
 import com.scouter.netherdepthsupgrade.NetherDepthsUpgrade;
+import com.scouter.netherdepthsupgrade.entity.LavaAnimal;
 import com.scouter.netherdepthsupgrade.entity.NDUEntity;
-import com.scouter.netherdepthsupgrade.entity.NDUEntityPlacement;
 import com.scouter.netherdepthsupgrade.entity.entities.*;
 import com.scouter.netherdepthsupgrade.items.NDUItems;
 import com.scouter.netherdepthsupgrade.modcompat.ModChecker;
 import com.scouter.netherdepthsupgrade.potion.NDUPotions;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionBrewing;
 import net.minecraft.world.item.alchemy.Potions;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.minecraft.world.level.levelgen.Heightmap;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
+import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
 
-@Mod.EventBusSubscriber(modid = NetherDepthsUpgrade.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = NetherDepthsUpgrade.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class ModSetup {
 
     public static void init(FMLCommonSetupEvent event){
         event.enqueueWork(() -> {
             ModChecker.setupModCompatCommonSetup();
-            NDUEntityPlacement.entityPlacement();
-
-            PotionBrewing.addMix(Potions.AWKWARD, NDUItems.LAVA_PUFFERFISH.get(), NDUPotions.WITHER.get());
-            PotionBrewing.addMix(NDUPotions.WITHER.get(), Items.REDSTONE, NDUPotions.LONG_WITHER.get());
-            PotionBrewing.addMix(Potions.AWKWARD, NDUItems.EYEBALL_FISH_EYE.get(), NDUPotions.LAVA_VISION.get());
-            PotionBrewing.addMix(Potions.AWKWARD, NDUItems.EYEBALL_FISH.get(), NDUPotions.LAVA_VISION.get());
-            PotionBrewing.addMix(Potions.AWKWARD, NDUItems.OBSIDIANFISH.get(), NDUPotions.RESISTANCE.get());
-            PotionBrewing.addMix(Potions.AWKWARD, NDUItems.GLOWDINE.get(), NDUPotions.GLOWING.get());
-            PotionBrewing.addMix(NDUPotions.GLOWING.get(), Items.REDSTONE, NDUPotions.LONG_GLOWING.get());
-            PotionBrewing.addMix(NDUPotions.RESISTANCE.get(), Items.REDSTONE, NDUPotions.LONG_RESISTANCE.get());
-            PotionBrewing.addMix(NDUPotions.RESISTANCE.get(), Items.GLOWSTONE_DUST, NDUPotions.STRONG_RESISTANCE.get());
-            PotionBrewing.addMix(NDUPotions.LAVA_VISION.get(), Items.REDSTONE, NDUPotions.LONG_LAVA_VISION.get());
         });
     }
 
     public static void setup(){
-        IEventBus bus = MinecraftForge.EVENT_BUS;
+        IEventBus bus = NeoForge.EVENT_BUS;
     }
 
 
+    @SubscribeEvent
+    public static void registerMobSpawns(SpawnPlacementRegisterEvent event) {
+        entityPlacement(event);
+    }
+    public  static void entityPlacement(SpawnPlacementRegisterEvent event) {
+        event.register(NDUEntity.OBSIDIAN_FISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NDUEntity.SEARING_COD.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NDUEntity.BLAZEFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NDUEntity.SOULSUCKER.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NDUEntity.WITHER_BONEFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NDUEntity.GLOWDINE.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NDUEntity.MAGMACUBEFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NDUEntity.BONEFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NDUEntity.LAVA_PUFFERFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NDUEntity.EYEBALL_FISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+        event.register(NDUEntity.FORTRESS_GROUPER.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+    }
 
     @SubscribeEvent
     public static void onAttributeCreate(EntityAttributeCreationEvent event){

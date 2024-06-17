@@ -7,7 +7,7 @@ package com.scouter.netherdepthsupgrade.modcompat;
  */
 
 import com.scouter.netherdepthsupgrade.NetherDepthsUpgrade;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 
 public class ModChecker {
 
@@ -22,11 +22,11 @@ public class ModChecker {
 
         try{
 
-            modid = "farmersdelight";
-            loadModCompat(modid, () -> FarmersDelightCompat.setupCompat());
+           //modid = "farmersdelight";
+           //loadModCompat(modid, () -> FarmersDelightCompat.setupCompat());
 
-            modid = "infernalexp";
-            loadModCompat(modid, () -> InfernalExpansionCompat.setupCompatPreInit());
+           //modid = "infernalexp";
+           //loadModCompat(modid, () -> InfernalExpansionCompat.setupCompatPreInit());
 
             modid = "byg";
             loadModCompat(modid, () -> BiomesYoullGoCompat.setupCompatPreInit());
@@ -43,8 +43,8 @@ public class ModChecker {
         String modid = "";
 
         try{
-            modid = "infernalexp";
-            loadModCompat(modid, () -> InfernalExpansionCompat.setupCompatCommonSetup());
+            //modid = "infernalexp";
+            //loadModCompat(modid, () -> InfernalExpansionCompat.setupCompatCommonSetup());
         }
         catch (Throwable e) {
             printErrorToLogs("classloading " + modid + " common setup, mod compat done afterwards broke");

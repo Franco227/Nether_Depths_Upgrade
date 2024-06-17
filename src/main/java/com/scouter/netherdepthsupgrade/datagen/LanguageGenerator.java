@@ -1,111 +1,107 @@
-/*package com.scouter.netherdepthsupgrade.datagen;
+package com.scouter.netherdepthsupgrade.datagen;
 
-import com.mojang.logging.LogUtils;
+import com.google.common.collect.ImmutableMap;
 import com.scouter.netherdepthsupgrade.NetherDepthsUpgrade;
-import com.scouter.netherdepthsupgrade.blocks.NDUBlocks;
-import com.scouter.netherdepthsupgrade.effect.MobEffects;
-import com.scouter.netherdepthsupgrade.enchantments.NDUEnchantments;
-import com.scouter.netherdepthsupgrade.entity.NDUEntity;
-import com.scouter.netherdepthsupgrade.items.NDUItems;
-import com.scouter.netherdepthsupgrade.potion.NDUPotions;
-import net.minecraft.data.DataGenerator;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraftforge.common.data.LanguageProvider;
-import org.slf4j.Logger;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.data.BlockFamily;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.data.LanguageProvider;
+import net.neoforged.neoforge.registries.DeferredBlock;
 
-import java.util.function.Supplier;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.BiConsumer;
 
 public class LanguageGenerator extends LanguageProvider {
-    public LanguageGenerator(DataGenerator gen){
-        super(gen, NetherDepthsUpgrade.MODID, "en_us");
+    public LanguageGenerator(PackOutput output) {
+        super(output, NetherDepthsUpgrade.MODID, "en_us");
     }
-    private static final Logger LOGGER = LogUtils.getLogger();
+    private final Set<Item> itemSet = new HashSet<>();
+
+    static final Map<BlockFamily.Variant, BiConsumer<LanguageGenerator, Block>> SHAPE_CONSUMERS =
+            ImmutableMap.<BlockFamily.Variant, BiConsumer<LanguageGenerator, Block>>builder()
+                    .put(BlockFamily.Variant.BUTTON, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.DOOR, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.CHISELED, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.CRACKED, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.CUSTOM_FENCE, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.FENCE, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.CUSTOM_FENCE_GATE, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.FENCE_GATE, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.SIGN, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.SLAB, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.STAIRS, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.PRESSURE_PLATE, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.TRAPDOOR, LanguageGenerator::add)
+                    .put(BlockFamily.Variant.WALL, LanguageGenerator::add)
+                    .build();
     @Override
-    protected void addTranslations(){
+    protected void addTranslations() {
+       // add(ABlocks.OORTALIT.get(), "Oortalit");
 
-        //BLOCKS
-        addBlock(NDUBlocks.LAVA_SPONGE, "Lava Sponge");
-        addBlock(NDUBlocks.WET_LAVA_SPONGE, "Wet Lava Sponge");
-        addBlock(NDUBlocks.WARPED_KELP, "Warped Kelp");
-        addBlock(NDUBlocks.WARPED_SEAGRASS, "Warped Seagrass");
-        addBlock(NDUBlocks.WARPED_KELP_BLOCK, "Warped Kelp Block");
-        //EGGS
-        addItem(NDUItems.LAVA_PUFFERFISH_SPAWN_EGG, "Lava Pufferfish Spawn Egg");
-        addItem(NDUItems.OBSIDIANFISH_SPAWN_EGG, "Obsidianfish Spawn Egg");
-        addItem(NDUItems.SEARING_COD_SPAWN_EGG, "Searing Cod Spawn Egg");
-        addItem(NDUItems.BONEFISH_SPAWN_EGG, "Bonefish Spawn Egg");
-        addItem(NDUItems.WITHER_BONEFISH_SPAWN_EGG, "Wither Bonefish Spawn Egg");
-        addItem(NDUItems.BLAZEFISH_SPAWN_EGG, "Blazefish Spawn Egg");
-        addItem(NDUItems.MAGMACUBEFISH_SPAWN_EGG, "Magma Cube fish Spawn Egg");
-        addItem(NDUItems.GLOWDINE_SPAWN_EGG, "Glowdine Spawn Egg");
-        addItem(NDUItems.SOULSUCKER_SPAWN_EGG, "Soul Sucker Spawn Egg");
-        //POTIONS
-        addPotion(NDUPotions.LAVA_VISION, "Potion of Lava Vision", "lava_vision");
-        addPotion(NDUPotions.LONG_LAVA_VISION, "Potion of Lava Vision", "lava_vision");
 
-        //ENTITIES
-        addEntityType(NDUEntity.LAVA_PUFFERFISH, "Lava Pufferfish");
-        addEntityType(NDUEntity.OBSIDIAN_FISH, "Obsidianfish");
-        addEntityType(NDUEntity.SEARING_COD, "Searing Cod");
-        addEntityType(NDUEntity.BONEFISH, "Bonefish");
-        addEntityType(NDUEntity.WITHER_BONEFISH, "Wither Bonefish");
-        addEntityType(NDUEntity.BLAZEFISH, "Blazefish");
-        addEntityType(NDUEntity.MAGMACUBEFISH, "Magma Cube fish");
-        addEntityType(NDUEntity.GLOWDINE, "Glowdine");
-        addEntityType(NDUEntity.SOULSUCKER, "Soul Sucker");
-
-        addItem(NDUItems.LAVA_PUFFERFISH_BUCKET, "Bucket of Lava Pufferfish");
-        addItem(NDUItems.LAVA_PUFFERFISH, "Lava Pufferfish");
-        addItem(NDUItems.OBSIDIANFISH, "Obsidianfish");
-        addItem(NDUItems.OBSIDIANFISH_BUCKET, "Bucket of Obsidianfish");
-        addItem(NDUItems.SEARING_COD_BUCKET, "Bucket of Searing Cod");
-        addItem(NDUItems.SEARING_COD, "Searing Cod");
-        addItem(NDUItems.BONEFISH_BUCKET, "Bucket of Bonefish");
-        addItem(NDUItems.BONEFISH, "Bonefish");
-        addItem(NDUItems.WITHER_BONEFISH_BUCKET, "Bucket of Wither Bonefish");
-        addItem(NDUItems.WITHER_BONEFISH, "Wither Bonefish");
-        addItem(NDUItems.BLAZEFISH_BUCKET, "Bucket of Blazefish");
-        addItem(NDUItems.BLAZEFISH, "Blazefish");
-        addItem(NDUItems.MAGMACUBEFISH_BUCKET, "Bucket of Magma Cube fish");
-        addItem(NDUItems.MAGMACUBEFISH, "Magma Cube fish");
-        addItem(NDUItems.GLOWDINE_BUCKET, "Bucket of Glowdine");
-        addItem(NDUItems.GLOWDINE, "Glowdine");
-        addItem(NDUItems.SOULSUCKER_BUCKET, "Bucket of Soul Sucker");
-        addItem(NDUItems.SOULSUCKER, "Soul Sucker");
-        addItem(NDUItems.SOUL_SUCKER_BOOTS, "Soul Sucker Boots");
-        addItem(NDUItems.SOUL_SUCKER_LEATHER, "Soul Sucker Leather");
-        //ENCHANTMENTS
-        addEnchantment(NDUEnchantments.HELL_STRIDER, "Hell Strider");
-
-        //EFFECTS
-        addEffect(MobEffects.LAVA_VISION, "Lava Vision");
-
-        //TABS
-        addTabName(NDUItems.creativeTab, "Nether Depths Upgrade");
-        addTabName(NDUItems.creativeTabFish, "Nether Depths Upgrade Fish");
+    }
+    public void add(DeferredBlock<Block> block, String name){
+        add(block.get().asItem(), name);
     }
 
-    @Override
-    public String getName() {
-        return "Nether Depths Upgrade Languages: en_us";
+    public void add(Item key, String name) {
+        itemSet.add(key);
+        add(key.getDescriptionId(), name);
     }
 
-    public void addTabName(CreativeModeTab key, String name){
-        add(key.getDisplayName().getString(), name);
+    public void addLeftOver(Item key) {
+        //if(key instanceof BlockItem item && item.getBlock() instanceof WallSignBlock) return;
+        String keyDescription = name(key);
+        String[] parts = keyDescription.replace("item.scalebound.", "").split("_");
+        StringBuilder modifiedString = new StringBuilder();
+        int i = 0;
+        for (String part : parts) {
+            if(0 == i){
+                modifiedString.append(Character.toUpperCase(part.charAt(0))).append(part.substring(1));
+            } else {
+                modifiedString.append(" ").append(Character.toUpperCase(part.charAt(0))).append(part.substring(1));
+            }
+            i++;
+        }
+        modifiedString.trimToSize();
+        String finalModifiedString = modifiedString.toString();
+        add(key, finalModifiedString);
     }
 
-    public void add(CreativeModeTab key, String name) {
-        add(key.getDisplayName().getString(), name);
+    public void add(Block key) {
+        //if(key instanceof WallSignBlock) return;
+        itemSet.add(key.asItem());
+        String keyDescription = key.getDescriptionId();
+        String[] parts = keyDescription.replace("block.scalebound.", "").split("_");
+        StringBuilder modifiedString = new StringBuilder();
+        int i = 0;
+        for (String part : parts) {
+            if(0 == i){
+                modifiedString.append(Character.toUpperCase(part.charAt(0))).append(part.substring(1));
+            } else {
+                modifiedString.append(" ").append(Character.toUpperCase(part.charAt(0))).append(part.substring(1));
+            }
+            i++;
+        }
+        modifiedString.trimToSize();
+        String finalModifiedString = modifiedString.toString();
+        add(key.getDescriptionId(), finalModifiedString);
     }
 
-    public void addPotion(Supplier<? extends Potion> key, String name, String regName) {
-        add(key.get(), name, regName);
+
+
+    private String name(Item block) {
+        return key(block).getPath();
     }
 
-    public void add(Potion key, String name, String regName) {
-        add("item.minecraft.potion.effect." + regName, name);
-        add("item.minecraft.splash_potion.effect." + regName, "Splash " + name);
-        add("item.minecraft.lingering_potion.effect." + regName, "Lingering " + name);
+    private ResourceLocation key(Item block) {
+        return BuiltInRegistries.ITEM.getKey(block);
     }
-}*/
+
+}
+

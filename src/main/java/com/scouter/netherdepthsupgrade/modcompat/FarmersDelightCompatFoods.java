@@ -1,4 +1,4 @@
-package com.scouter.netherdepthsupgrade.modcompat;
+/*package com.scouter.netherdepthsupgrade.modcompat;
 
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -123,3 +123,4 @@ public class FarmersDelightCompatFoods {
             .build();
 
 }
+*/

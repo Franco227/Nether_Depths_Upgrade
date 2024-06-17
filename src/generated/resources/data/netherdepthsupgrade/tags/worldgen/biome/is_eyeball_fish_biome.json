@@ -1,9 +1,0 @@
-{
-  "values": [
-    "minecraft:crimson_forest",
-    {
-      "id": "byg:wailing_garth",
-      "required": false
-    }
-  ]
-}

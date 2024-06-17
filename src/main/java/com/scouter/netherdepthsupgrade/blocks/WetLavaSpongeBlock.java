@@ -29,7 +29,7 @@ public class WetLavaSpongeBlock extends Block {
     public void setPlacedBy(Level pLevel, BlockPos pPos, BlockState pState, @Nullable LivingEntity pPlacer, ItemStack pStack) {
         if (pLevel.getBlockState(pPos.above()).getFluidState().is(FluidTags.WATER)) {
             if(pPlacer instanceof ServerPlayer player){
-                NDUAdvancementTriggers.PLACE_WET_LAVA_SPONGE.trigger(player, pPos, pStack);
+                //NDUAdvancementTriggers.PLACE_WET_LAVA_SPONGE.trigger(player, pPos, pStack);
             }
         }
     }

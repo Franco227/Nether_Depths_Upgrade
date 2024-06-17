@@ -1,99 +1,75 @@
-/*package com.scouter.netherdepthsupgrade.datagen;
+package com.scouter.netherdepthsupgrade.datagen;
 
-import com.google.common.collect.Sets;
-import com.google.gson.JsonElement;
-import com.mojang.serialization.JsonOps;
-import com.scouter.netherdepthsupgrade.world.feature.NDUConfiguredFeatures;
-import net.minecraft.core.Registry;
-import net.minecraft.core.RegistryAccess;
+import com.scouter.netherdepthsupgrade.NetherDepthsUpgrade;
+import net.minecraft.DetectedVersion;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
-import net.minecraft.data.DataProvider;
-import net.minecraft.data.models.blockstates.BlockStateGenerator;
-import net.minecraft.resources.RegistryOps;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
-import net.minecraftforge.common.data.ExistingFileHelper;
-import net.minecraftforge.common.data.JsonCodecProvider;
-import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.minecraft.data.PackOutput;
+import net.minecraft.data.metadata.PackMetadataGenerator;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.util.InclusiveRange;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.common.data.DatapackBuiltinEntriesProvider;
+import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-import static com.scouter.netherdepthsupgrade.NetherDepthsUpgrade.MODID;
-
-@Mod.EventBusSubscriber(modid = MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-
+@EventBusSubscriber(modid = NetherDepthsUpgrade.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
-
     @SubscribeEvent
-    public static void gatherData(GatherDataEvent evt) {
-        if (evt.includeServer())
-            registerServerProviders(evt.getGenerator(), evt);
+    public static void gatherData(GatherDataEvent event) {
+        DataGenerator generator = event.getGenerator();
+        PackOutput packOutput = generator.getPackOutput();
+        ExistingFileHelper existingFileHelper = event.getExistingFileHelper();
+        CompletableFuture<HolderLookup.Provider> lookupProvider = event.getLookupProvider();
 
-        if (evt.includeClient())
-            registerClientProviders(evt.getGenerator(), evt);
+
+        generator.addProvider(event.includeServer(), new RecipeGenerator(packOutput, lookupProvider));
+        //generator.addProvider(event.includeServer(), new LootTableGenerator(packOutput));
+        generator.addProvider(event.includeServer(), new LanguageGenerator(packOutput));
+        generator.addProvider(event.includeClient(), new SBlockStateGenerator(packOutput, existingFileHelper));
+        generator.addProvider(event.includeClient(), new ItemModelGenerator(packOutput, existingFileHelper));
+        generator.addProvider(event.includeServer(), new FluidTagGenerator(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new EntityTagGenerator(packOutput, lookupProvider, existingFileHelper));
 
 
+
+
+
+        BlockTagGenerator blockTagGenerator = generator.addProvider(event.includeServer(),
+                new BlockTagGenerator(packOutput, lookupProvider, existingFileHelper));
+        generator.addProvider(event.includeServer(), new ItemTagGenerator(packOutput, lookupProvider, blockTagGenerator.contentsGetter(), existingFileHelper));
+        //generator.addProvider(event.includeServer(), new WorldGenProvider(packOutput, lookupProvider));
+
+        DatapackBuiltinEntriesProvider datapackProvider = new RegistryDataGenerator(packOutput, lookupProvider);
+
+        CompletableFuture<HolderLookup.Provider> customLookupProvider = datapackProvider.getRegistryProvider();
+
+
+        Map<PackType, Integer> packVersions = Arrays.stream(PackType.values())
+                .collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion));
+
+        InclusiveRange<Integer> supportedFormatsRange = new InclusiveRange<>(
+                packVersions.values().stream().min(Integer::compareTo).orElse(1),
+                packVersions.values().stream().max(Integer::compareTo).orElse(1)
+        );
+
+        generator.addProvider(true, new PackMetadataGenerator(packOutput).add(PackMetadataSection.TYPE, new PackMetadataSection(
+                Component.literal("Resources for Nether Depths Upgrade"),
+                DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
+                Optional.of(supportedFormatsRange)
+        )));
+        //new ForgeSherdDatagenSuite(event, Scalebound.MODID)
+
+        //        .makeSherdSuite(SSherds.DRAGON, new Sherd(SItems.DRAGON_POTTERY_SHERD.get(), prefix("dragon_pottery_pattern")));
     }
-
-    private static void registerClientProviders(DataGenerator generator, GatherDataEvent evt) {
-        ExistingFileHelper helper = evt.getExistingFileHelper();
-        generator.addProvider(true, new LootGenerator(generator));
-        generator.addProvider(true,new BlockTagsGenerator(generator, helper));
-    }
-
-    private static void registerServerProviders(DataGenerator generator, GatherDataEvent evt) {
-        ExistingFileHelper helper = evt.getExistingFileHelper();
-        BlockTagsGenerator blockTags = new BlockTagsGenerator(generator, helper);
-        Set<BlockStateGenerator> set = Sets.newHashSet();
-        Consumer<BlockStateGenerator> consumer = set::add;
-        generator.addProvider(true,new NDUBiomeTagsProvider(generator, helper));
-        generator.addProvider(true,new EntityTags(generator, helper));
-        generator.addProvider(true,new RecipeGenerator(generator));
-        generator.addProvider(true,new BlockstateGenerator(generator, helper));
-        generator.addProvider(true,new SoundsGenerator(generator, helper));
-        generator.addProvider(true,new ItemTagsGenerator(generator, blockTags, helper));
-        generator.addProvider(true,new ItemModelGenerator(generator, helper));
-
-
-        final RegistryAccess registries = RegistryAccess.builtinCopy();
-        final RegistryOps<JsonElement> ops = RegistryOps.create(JsonOps.INSTANCE, registries);
-        final DataProvider configuredFeatureProvider = JsonCodecProvider.forDatapackRegistry(generator, helper, MODID, ops, Registry.CONFIGURED_FEATURE_REGISTRY, getConfiguredFeatures(registries));
-        generator.addProvider(true, configuredFeatureProvider);
-
-        final DataProvider placedFeatureProvider = JsonCodecProvider.forDatapackRegistry(generator, helper, MODID, ops, Registry.PLACED_FEATURE_REGISTRY, getPlacedFeatures(registries));
-        generator.addProvider(true, placedFeatureProvider);
-
-    }
-
-    public static Map<ResourceLocation, ConfiguredFeature<?, ?>> getConfiguredFeatures(RegistryAccess registries) {
-        Map<ResourceLocation, ConfiguredFeature<?, ?>> map = new HashMap<>();
-
-        for (int i = 0; i < NDUConfiguredFeatures.configuredFeatureList.size(); i++) {
-            ResourceLocation RL = new ResourceLocation(MODID, NDUConfiguredFeatures.configuredFeatureList.get(i));
-            Registry<ConfiguredFeature<?, ?>> configuredFeatures = registries.registryOrThrow(Registry.CONFIGURED_FEATURE_REGISTRY);
-            ConfiguredFeature<?, ?> PF = configuredFeatures.get(RL);
-            map.put(RL, PF);
-        }
-
-        return map;
-    }
-
-    public static Map<ResourceLocation, PlacedFeature> getPlacedFeatures(RegistryAccess registries) {
-        Map<ResourceLocation, PlacedFeature> map = new HashMap<>();
-
-        for (int i = 0; i < NDUConfiguredFeatures.placedFeatureList.size(); i++) {
-            ResourceLocation RL = new ResourceLocation(MODID, NDUConfiguredFeatures.placedFeatureList.get(i));
-            Registry<PlacedFeature> placedFeatures = registries.registryOrThrow(Registry.PLACED_FEATURE_REGISTRY);
-            PlacedFeature PF = placedFeatures.get(RL);
-            map.put(RL, PF);
-        }
-
-        return map;
-    }
-}*/
+}

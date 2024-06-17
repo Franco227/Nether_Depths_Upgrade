@@ -2,6 +2,7 @@ package com.scouter.netherdepthsupgrade.blocks.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -43,10 +44,9 @@ public class LavaGlassBlockEntity extends BlockEntity {
         super(NDUBlockEntities.LAVA_GLASS.get(), pPos, pBlockState);
     }
 
-
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.saveAdditional(pTag, pRegistries);
         ListTag occlusionDirStrings = new ListTag();
         for (Direction direction : occlusionDirs) {
             CompoundTag compoundTag = new CompoundTag();
@@ -58,8 +58,8 @@ public class LavaGlassBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider pRegistries) {
+        super.loadAdditional(pTag, pRegistries);
         ListTag occlusionDirTag = pTag.getList("occlusiondirs", Tag.TAG_COMPOUND);
         for (int i = 0; i < occlusionDirTag.size(); i++) {
             CompoundTag dirCompoundTag = occlusionDirTag.getCompound(i);
@@ -79,8 +79,8 @@ public class LavaGlassBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        super.handleUpdateTag(tag);
+    public void handleUpdateTag(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+        super.handleUpdateTag(tag, lookupProvider);
         ListTag occlusionDirTag = tag.getList("occlusiondirs", Tag.TAG_COMPOUND);
         for (int i = 0; i < occlusionDirTag.size(); i++) {
             CompoundTag dirCompoundTag = occlusionDirTag.getCompound(i);
@@ -93,7 +93,7 @@ public class LavaGlassBlockEntity extends BlockEntity {
     }
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public CompoundTag getUpdateTag(HolderLookup.Provider pRegistries) {
         CompoundTag compoundTag = new CompoundTag();
         ListTag occlusionDirStrings = new ListTag();
         for (Direction direction : occlusionDirs) {
@@ -106,6 +106,8 @@ public class LavaGlassBlockEntity extends BlockEntity {
         return compoundTag;
     }
 
+
+
     @Nullable
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
@@ -113,8 +115,8 @@ public class LavaGlassBlockEntity extends BlockEntity {
     }
 
     @Override
-    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt) {
-        super.onDataPacket(net, pkt);
+    public void onDataPacket(Connection net, ClientboundBlockEntityDataPacket pkt, HolderLookup.Provider lookupProvider) {
+        super.onDataPacket(net, pkt, lookupProvider);
         LavaGlassBlockEntity blockEntity = (LavaGlassBlockEntity) this.level.getBlockEntity(pkt.getPos());
         CompoundTag tag = pkt.getTag();
         if(tag != null && tag.contains("occlusiondirs", 10)) {

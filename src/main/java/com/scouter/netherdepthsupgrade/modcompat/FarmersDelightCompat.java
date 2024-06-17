@@ -1,4 +1,4 @@
-package com.scouter.netherdepthsupgrade.modcompat;
+/*package com.scouter.netherdepthsupgrade.modcompat;
 
 import com.mojang.logging.LogUtils;
 import com.scouter.netherdepthsupgrade.NetherDepthsUpgrade;
@@ -281,4 +281,4 @@ public class FarmersDelightCompat {
             FOOD_SHAPE = Shapes.joinUnoptimized(PLATE_SHAPE, Block.box(2.0, 2.0, 2.0, 14.0, 4.0, 14.0), BooleanOp.OR);
         }
     }
-}
+}*/

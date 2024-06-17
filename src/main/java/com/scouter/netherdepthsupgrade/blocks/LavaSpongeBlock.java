@@ -58,7 +58,7 @@ public class LavaSpongeBlock extends Block {
                 if (blockstate.is(Blocks.WATER)) return false;
                 if (block instanceof BucketPickup) {
                     BucketPickup bucketpickup = (BucketPickup) block;
-                    if (!bucketpickup.pickupBlock(pLevel, p_279054_, blockstate).isEmpty()) {
+                    if (!bucketpickup.pickupBlock(null ,pLevel, p_279054_, blockstate).isEmpty()) {
                         return true;
                     }
                 }

@@ -45,9 +45,11 @@ public abstract class AbstractLavaFish extends LavaAnimal implements BucketableL
         this.moveControl = new FishMoveControl(this);
     }
 
-    protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
-        return pSize.height * 0.65F;
+    @Override
+    public double getEyeY() {
+        return this.position().y + (double)this.getEyeHeight() * 0.65F;
     }
+
 
     public static AttributeSupplier setAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 3.0D)
@@ -70,11 +72,14 @@ public abstract class AbstractLavaFish extends LavaAnimal implements BucketableL
         return 8;
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FROM_BUCKET, false);
-        this.entityData.define(JUMPING, Boolean.valueOf(false));
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
+        super.defineSynchedData(pBuilder);
+        pBuilder.define(FROM_BUCKET, false);
+        pBuilder.define(JUMPING, Boolean.valueOf(false));
     }
+
 
     public boolean fromBucket() {
         return this.entityData.get(FROM_BUCKET);

@@ -1,6 +1,7 @@
 package com.scouter.netherdepthsupgrade.entity;
 
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
@@ -12,6 +13,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ItemUtils;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.component.CustomData;
 import net.minecraft.world.level.Level;
 
 import java.util.Optional;
@@ -31,33 +33,31 @@ public interface BucketableLava {
 
     /** @deprecated */
     @Deprecated
-    static void saveDefaultDataToBucketTag(Mob p_148823_, ItemStack p_148824_) {
-        CompoundTag compoundtag = p_148824_.getOrCreateTag();
-        if (p_148823_.hasCustomName()) {
-            p_148824_.setHoverName(p_148823_.getCustomName());
-        }
+    static void saveDefaultDataToBucketTag(Mob pMob, ItemStack pBucket) {
+        pBucket.set(DataComponents.CUSTOM_NAME, pMob.getCustomName());
+        CustomData.update(DataComponents.BUCKET_ENTITY_DATA, pBucket, p_331213_ -> {
+            if (pMob.isNoAi()) {
+                p_331213_.putBoolean("NoAI", pMob.isNoAi());
+            }
 
-        if (p_148823_.isNoAi()) {
-            compoundtag.putBoolean("NoAI", p_148823_.isNoAi());
-        }
+            if (pMob.isSilent()) {
+                p_331213_.putBoolean("Silent", pMob.isSilent());
+            }
 
-        if (p_148823_.isSilent()) {
-            compoundtag.putBoolean("Silent", p_148823_.isSilent());
-        }
+            if (pMob.isNoGravity()) {
+                p_331213_.putBoolean("NoGravity", pMob.isNoGravity());
+            }
 
-        if (p_148823_.isNoGravity()) {
-            compoundtag.putBoolean("NoGravity", p_148823_.isNoGravity());
-        }
+            if (pMob.hasGlowingTag()) {
+                p_331213_.putBoolean("Glowing", pMob.hasGlowingTag());
+            }
 
-        if (p_148823_.hasGlowingTag()) {
-            compoundtag.putBoolean("Glowing", p_148823_.hasGlowingTag());
-        }
+            if (pMob.isInvulnerable()) {
+                p_331213_.putBoolean("Invulnerable", pMob.isInvulnerable());
+            }
 
-        if (p_148823_.isInvulnerable()) {
-            compoundtag.putBoolean("Invulnerable", p_148823_.isInvulnerable());
-        }
-
-        compoundtag.putFloat("Health", p_148823_.getHealth());
+            p_331213_.putFloat("Health", pMob.getHealth());
+        });
     }
 
     /** @deprecated */

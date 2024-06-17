@@ -10,16 +10,14 @@ import com.scouter.netherdepthsupgrade.particle.GlowdineParticle;
 import com.scouter.netherdepthsupgrade.particle.NDUParticle;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.EntityRenderers;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 
-@Mod.EventBusSubscriber(modid = NetherDepthsUpgrade.MODID, value = Dist.CLIENT,bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(modid = NetherDepthsUpgrade.MODID, value = Dist.CLIENT,bus = EventBusSubscriber.Bus.MOD)
 public class ClientSetup {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(NetherDepthsUpgrade.MODID, "textures/mob_effect/effect.png");
 
     public static void init(FMLClientSetupEvent event){
         RenderLayerRegistration.init();

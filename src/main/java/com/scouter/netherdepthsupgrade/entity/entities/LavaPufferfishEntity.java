@@ -2,7 +2,6 @@ package com.scouter.netherdepthsupgrade.entity.entities;
 
 
 import com.scouter.netherdepthsupgrade.entity.AbstractLavaFish;
-import com.scouter.netherdepthsupgrade.entity.NDUMobType;
 import com.scouter.netherdepthsupgrade.items.NDUItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
@@ -12,6 +11,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -22,10 +22,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
 import java.util.List;
@@ -41,9 +41,13 @@ public class LavaPufferfishEntity extends AbstractLavaFish implements GeoEntity 
         if (p_29634_ instanceof Player && ((Player)p_29634_).isCreative()) {
             return false;
         } else {
-            return p_29634_.getType() == EntityType.AXOLOTL || p_29634_.getMobType() != NDUMobType.LAVA;
+
+            //todo add one for lava fish
+            return !p_29634_.getType().is(EntityTypeTags.NOT_SCARY_FOR_PUFFERFISH);
         }
     };
+
+
     static final TargetingConditions targetingConditions = TargetingConditions.forNonCombat().ignoreInvisibilityTesting().ignoreLineOfSight().selector(SCARY_MOB);
     public static final int STATE_SMALL = 0;
     public static final int STATE_MID = 1;
@@ -54,10 +58,13 @@ public class LavaPufferfishEntity extends AbstractLavaFish implements GeoEntity 
         this.refreshDimensions();
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(PUFF_STATE, 0);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
+        super.defineSynchedData(pBuilder);
+        pBuilder.define(PUFF_STATE, 0);
     }
+
+
 
     public int getPuffState() {
         return this.entityData.get(PUFF_STATE);
@@ -186,7 +193,9 @@ public class LavaPufferfishEntity extends AbstractLavaFish implements GeoEntity 
         return SoundEvents.PUFFER_FISH_FLOP;
     }
 
-    public EntityDimensions getDimensions(Pose pPose) {
+
+    @Override
+    protected EntityDimensions getDefaultDimensions(Pose pPose) {
         return super.getDimensions(pPose).scale(getScale(this.getPuffState()));
     }
 

@@ -42,11 +42,11 @@ public abstract class GrowingLavaPlantHeadBlock extends GrowingLavaPlantBlock im
      * Performs a random tick on a block.
      */
     public void randomTick(BlockState pState, ServerLevel pLevel, BlockPos pPos, RandomSource pRandom) {
-        if (pState.getValue(AGE) < 25 && net.minecraftforge.common.ForgeHooks.onCropsGrowPre(pLevel, pPos.relative(this.growthDirection), pLevel.getBlockState(pPos.relative(this.growthDirection)),pRandom.nextDouble() < this.growPerTickProbability)) {
+        if (pState.getValue(AGE) < 25 && net.neoforged.neoforge.common.CommonHooks.canCropGrow(pLevel, pPos.relative(this.growthDirection), pState, pRandom.nextDouble() < this.growPerTickProbability)) {
             BlockPos blockpos = pPos.relative(this.growthDirection);
             if (this.canGrowInto(pLevel.getBlockState(blockpos))) {
                 pLevel.setBlockAndUpdate(blockpos, this.getGrowIntoState(pState, pLevel.random));
-                net.minecraftforge.common.ForgeHooks.onCropsGrowPost(pLevel, blockpos, pLevel.getBlockState(blockpos));
+                net.neoforged.neoforge.common.CommonHooks.fireCropGrowPost(pLevel, blockpos, pLevel.getBlockState(blockpos));
             }
         }
 
@@ -97,7 +97,7 @@ public abstract class GrowingLavaPlantHeadBlock extends GrowingLavaPlantBlock im
     /**
      * @return whether bonemeal can be used on this block
      */
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
+    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState) {
         return this.canGrowInto(pLevel.getBlockState(pPos.relative(this.growthDirection)));
     }
 

@@ -8,7 +8,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.PathNavigationRegion;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
@@ -19,7 +18,7 @@ import java.util.Map;
 
 public class LavaSwimNodeEvaluator extends NodeEvaluator {
     private final boolean allowBreaching;
-    private final Long2ObjectMap<BlockPathTypes> pathTypesByPosCache = new Long2ObjectOpenHashMap<>();
+    private final Long2ObjectMap<PathType> pathTypesByPosCache = new Long2ObjectOpenHashMap<>();
 
     public LavaSwimNodeEvaluator(boolean p_77457_) {
         this.allowBreaching = p_77457_;
@@ -42,6 +41,11 @@ public class LavaSwimNodeEvaluator extends NodeEvaluator {
 
     public Node getStart() {
         return super.getNode(Mth.floor(this.mob.getBoundingBox().minX), Mth.floor(this.mob.getBoundingBox().minY + 0.5D), Mth.floor(this.mob.getBoundingBox().minZ));
+    }
+
+    @Override
+    public Target getTarget(double pX, double pY, double pZ) {
+        return this.getTargetNodeAt(pX, pY, pZ);
     }
 
     public Target getGoal(double p_77459_, double p_77460_, double p_77461_) {
@@ -88,14 +92,14 @@ public class LavaSwimNodeEvaluator extends NodeEvaluator {
     @Nullable
     protected Node getNode(int pX, int pY, int pZ) {
         Node node = null;
-        BlockPathTypes blockpathtypes = this.getCachedBlockType(pX, pY, pZ);
-        if (this.allowBreaching && blockpathtypes == BlockPathTypes.BREACH || blockpathtypes == BlockPathTypes.WATER ||  blockpathtypes == BlockPathTypes.LAVA) {
-            float f = this.mob.getPathfindingMalus(blockpathtypes);
+        PathType PathType = this.getCachedBlockType(pX, pY, pZ);
+        if (this.allowBreaching && PathType == PathType.BREACH || PathType == PathType.WATER ||  PathType == PathType.LAVA) {
+            float f = this.mob.getPathfindingMalus(PathType);
             if (f >= 0.0F) {
                 node = super.getNode(pX, pY, pZ);
-                node.type = blockpathtypes;
+                node.type = PathType;
                 node.costMalus = Math.max(node.costMalus, f);
-                if (this.level.getFluidState(new BlockPos(pX, pY, pZ)).isEmpty()) {
+                if (this.mob.level().getFluidState(new BlockPos(pX, pY, pZ)).isEmpty()) {
                     node.costMalus += 8.0F;
                 }
             }
@@ -104,16 +108,21 @@ public class LavaSwimNodeEvaluator extends NodeEvaluator {
         return node;
     }
 
-    protected BlockPathTypes getCachedBlockType(int p_192968_, int p_192969_, int p_192970_) {
-        return this.pathTypesByPosCache.computeIfAbsent(BlockPos.asLong(p_192968_, p_192969_, p_192970_), (p_192957_) -> {
-            return this.getBlockPathType(this.level, p_192968_, p_192969_, p_192970_);
-        });
+    protected PathType getCachedBlockType(int pX, int pY, int pZ) {
+        return this.pathTypesByPosCache
+                .computeIfAbsent(
+                        BlockPos.asLong(pX, pY, pZ), p_330157_ -> this.getPathType(this.currentContext, pX, pY, pZ)
+                );
     }
 
+
+
     @Override
-    public BlockPathTypes getBlockPathType(BlockGetter pLevel, int pX, int pY, int pZ) {
-        return this.getBlockPathType(pLevel, pX, pY, pZ, this.mob);
+    public PathType getPathType(PathfindingContext pContext, int pX, int pY, int pZ) {
+        return this.getPathTypeOfMob(pContext, pX, pY, pZ, this.mob);
     }
+
+
 
 
     /**
@@ -123,26 +132,26 @@ public class LavaSwimNodeEvaluator extends NodeEvaluator {
 
 
 
-    public BlockPathTypes getBlockPathType(BlockGetter pBlockaccess, int pX, int pY, int pZ, Mob pEntityliving) {
+    public PathType getPathTypeOfMob(PathfindingContext pBlockaccess, int pX, int pY, int pZ, Mob pEntityliving) {
         BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
         for(int i = pX; i < pX + this.entityWidth; ++i) {
             for(int j = pY; j < pY + this.entityHeight; ++j) {
                 for(int k = pZ; k < pZ + this.entityDepth; ++k) {
-                    FluidState fluidstate = pBlockaccess.getFluidState(blockpos$mutableblockpos.set(i, j, k));
                     BlockState blockstate = pBlockaccess.getBlockState(blockpos$mutableblockpos.set(i, j, k));
-                    if (fluidstate.isEmpty() && blockstate.isPathfindable(pBlockaccess, blockpos$mutableblockpos.below(), PathComputationType.WATER) && blockstate.isAir()) {
-                        return BlockPathTypes.BREACH;
+                    FluidState fluidstate = blockstate.getFluidState();
+                    if (fluidstate.isEmpty() && blockstate.isPathfindable(PathComputationType.WATER) && blockstate.isAir()) {
+                        return PathType.BREACH;
                     }
                     else {
-                        return fluidstate.is(FluidTags.LAVA) ? BlockPathTypes.WATER : BlockPathTypes.BLOCKED;
+                        return fluidstate.is(FluidTags.LAVA) ? PathType.WATER : PathType.BLOCKED;
                     }
                 }
             }
         }
 
         BlockState blockstate1 = pBlockaccess.getBlockState(blockpos$mutableblockpos);
-        FluidState fluidState1 = pBlockaccess.getFluidState(blockpos$mutableblockpos);
-        return fluidState1.is(FluidTags.LAVA) ? BlockPathTypes.WATER : BlockPathTypes.BLOCKED;
+        FluidState fluidState1 = blockstate1.getFluidState();
+        return fluidState1.is(FluidTags.LAVA) ? PathType.WATER : PathType.BLOCKED;
     }
 }

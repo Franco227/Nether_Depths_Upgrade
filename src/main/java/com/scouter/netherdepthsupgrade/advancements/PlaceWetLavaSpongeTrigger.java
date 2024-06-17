@@ -1,8 +1,11 @@
-package com.scouter.netherdepthsupgrade.advancements;
+/*package com.scouter.netherdepthsupgrade.advancements;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
-import net.minecraft.advancements.critereon.*;
+import net.minecraft.advancements.critereon.ContextAwarePredicate;
+import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.LocationPredicate;
+import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
@@ -32,12 +35,12 @@ public class PlaceWetLavaSpongeTrigger extends SimpleCriterionTrigger<PlaceWetLa
         return this.id;
     }
 
-    public PlaceWetLavaSpongeTrigger.TriggerInstance createInstance(JsonObject p_286301_, ContextAwarePredicate p_286748_, DeserializationContext p_286322_) {
+    public TriggerInstance createInstance(JsonObject p_286301_, ContextAwarePredicate p_286748_, DeserializationContext p_286322_) {
         ContextAwarePredicate contextawarepredicate = ContextAwarePredicate.fromElement("location", p_286322_, p_286301_.get("location"), LootContextParamSets.ADVANCEMENT_LOCATION);
         if (contextawarepredicate == null) {
             throw new JsonParseException("Failed to parse 'location' field");
         } else {
-            return new PlaceWetLavaSpongeTrigger.TriggerInstance(this.id, p_286748_, contextawarepredicate);
+            return new TriggerInstance(this.id, p_286748_, contextawarepredicate);
         }
     }
 
@@ -59,28 +62,28 @@ public class PlaceWetLavaSpongeTrigger extends SimpleCriterionTrigger<PlaceWetLa
             this.location = p_286319_;
         }
 
-        public static PlaceWetLavaSpongeTrigger.TriggerInstance placedBlock(Block p_286530_) {
+        public static TriggerInstance placedBlock(Block p_286530_) {
             ContextAwarePredicate contextawarepredicate = ContextAwarePredicate.create(LootItemBlockStatePropertyCondition.hasBlockStateProperties(p_286530_).build());
-            return new PlaceWetLavaSpongeTrigger.TriggerInstance(NDUAdvancementTriggers.PLACE_WET_LAVA_SPONGE.id, ContextAwarePredicate.ANY, contextawarepredicate);
+            return new TriggerInstance(NDUAdvancementTriggers.PLACE_WET_LAVA_SPONGE.id, ContextAwarePredicate.ANY, contextawarepredicate);
         }
 
-        public static PlaceWetLavaSpongeTrigger.TriggerInstance placedBlock(LootItemCondition.Builder... p_286365_) {
+        public static TriggerInstance placedBlock(LootItemCondition.Builder... p_286365_) {
             ContextAwarePredicate contextawarepredicate = ContextAwarePredicate.create(Arrays.stream(p_286365_).map(LootItemCondition.Builder::build).toArray((p_286827_) -> {
                 return new LootItemCondition[p_286827_];
             }));
-            return new PlaceWetLavaSpongeTrigger.TriggerInstance(NDUAdvancementTriggers.PLACE_WET_LAVA_SPONGE.id, ContextAwarePredicate.ANY, contextawarepredicate);
+            return new TriggerInstance(NDUAdvancementTriggers.PLACE_WET_LAVA_SPONGE.id, ContextAwarePredicate.ANY, contextawarepredicate);
         }
 
-        private static PlaceWetLavaSpongeTrigger.TriggerInstance itemUsedOnLocation(LocationPredicate.Builder p_286740_, ItemPredicate.Builder p_286777_, ResourceLocation p_286742_) {
+        private static TriggerInstance itemUsedOnLocation(LocationPredicate.Builder p_286740_, ItemPredicate.Builder p_286777_, ResourceLocation p_286742_) {
             ContextAwarePredicate contextawarepredicate = ContextAwarePredicate.create(LocationCheck.checkLocation(p_286740_).build(), MatchTool.toolMatches(p_286777_).build());
-            return new PlaceWetLavaSpongeTrigger.TriggerInstance(p_286742_, ContextAwarePredicate.ANY, contextawarepredicate);
+            return new TriggerInstance(p_286742_, ContextAwarePredicate.ANY, contextawarepredicate);
         }
 
-        public static PlaceWetLavaSpongeTrigger.TriggerInstance itemUsedOnBlock(LocationPredicate.Builder p_286808_, ItemPredicate.Builder p_286486_) {
+        public static TriggerInstance itemUsedOnBlock(LocationPredicate.Builder p_286808_, ItemPredicate.Builder p_286486_) {
             return itemUsedOnLocation(p_286808_, p_286486_, NDUAdvancementTriggers.PLACE_WET_LAVA_SPONGE.id);
         }
 
-        public static PlaceWetLavaSpongeTrigger.TriggerInstance allayDropItemOnBlock(LocationPredicate.Builder p_286325_, ItemPredicate.Builder p_286531_) {
+        public static TriggerInstance allayDropItemOnBlock(LocationPredicate.Builder p_286325_, ItemPredicate.Builder p_286531_) {
             return itemUsedOnLocation(p_286325_, p_286531_, NDUAdvancementTriggers.PLACE_WET_LAVA_SPONGE.id);
         }
 
@@ -95,3 +98,4 @@ public class PlaceWetLavaSpongeTrigger extends SimpleCriterionTrigger<PlaceWetLa
         }
     }
 }
+*/

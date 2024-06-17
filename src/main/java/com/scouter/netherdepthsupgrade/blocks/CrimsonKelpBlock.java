@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelAccessor;
@@ -38,13 +39,8 @@ public class CrimsonKelpBlock extends GrowingLavaPlantHeadBlock implements Liqui
         return !pState.is(Blocks.MAGMA_BLOCK);
     }
 
-    public boolean canPlaceLiquid(BlockGetter pLevel, BlockPos pPos, BlockState pState, Fluid pFluid) {
-        return false;
-    }
 
-    public boolean placeLiquid(LevelAccessor pLevel, BlockPos pPos, BlockState pState, FluidState pFluidState) {
-        return false;
-    }
+
 
     /**
      * Used to determine how much to grow the plant when using bonemeal.
@@ -61,5 +57,15 @@ public class CrimsonKelpBlock extends GrowingLavaPlantHeadBlock implements Liqui
 
     public FluidState getFluidState(BlockState pState) {
         return Fluids.LAVA.getSource(false);
+    }
+
+    @Override
+    public boolean canPlaceLiquid(@org.jetbrains.annotations.Nullable Player pPlayer, BlockGetter pLevel, BlockPos pPos, BlockState pState, Fluid pFluid) {
+        return false;
+    }
+
+    @Override
+    public boolean placeLiquid(LevelAccessor pLevel, BlockPos pPos, BlockState pState, FluidState pFluidState) {
+        return false;
     }
 }

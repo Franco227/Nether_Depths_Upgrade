@@ -7,6 +7,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 
@@ -19,7 +20,7 @@ public class NDUTags {
 
         }
         private static TagKey<Block> forgeTag(String name){
-            return BlockTags.create(new ResourceLocation("forge", name));
+            return BlockTags.create(ResourceLocation.tryBuild("forge", name));
 
         }
     }
@@ -31,7 +32,7 @@ public class NDUTags {
 
         }
         private static TagKey<Item> forgeTag(String name){
-            return ItemTags.create(new ResourceLocation("forge", name));
+            return ItemTags.create( ResourceLocation.tryBuild("forge", name));
 
         }
     }
@@ -42,7 +43,7 @@ public class NDUTags {
 
         }
         private static TagKey<EntityType<?>> forgeTag(String name){
-            return TagKey.create(Registries.ENTITY_TYPE, new ResourceLocation("forge", name));
+            return TagKey.create(Registries.ENTITY_TYPE, ResourceLocation.tryBuild("forge", name));
 
         }
     }
@@ -65,7 +66,16 @@ public class NDUTags {
 
         }
         private static TagKey<Biome> forgeTag(String name){
-            return TagKey.create(Registries.BIOME, new ResourceLocation("forge", name));
+            return TagKey.create(Registries.BIOME, ResourceLocation.tryBuild("forge", name));
+
+        }
+    }
+    public static class Enchantments {
+        public static final TagKey<Enchantment> HELL_STRIDER = tag("hell_strider");
+
+
+        private static TagKey<Enchantment> tag(String name){
+            return TagKey.create(Registries.ENCHANTMENT, prefix(name));
 
         }
     }
