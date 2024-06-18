@@ -2,17 +2,22 @@ package com.scouter.netherdepthsupgrade.datagen;
 
 import com.google.common.collect.ImmutableMap;
 import com.scouter.netherdepthsupgrade.NetherDepthsUpgrade;
+import com.scouter.netherdepthsupgrade.blocks.NDUBlocks;
+import com.scouter.netherdepthsupgrade.items.NDUItems;
+import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredItem;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -43,7 +48,83 @@ public class ItemModelGenerator extends ItemModelProvider {
                     .build();
     @Override
     protected void registerModels() {
+        for (Item i : BuiltInRegistries.ITEM) {
+            if (i instanceof SpawnEggItem && BuiltInRegistries.ITEM.getKey(i).getNamespace().equals(NetherDepthsUpgrade.MODID)) {
+                getBuilder(BuiltInRegistries.ITEM.getKey(i).getPath())
+                        .parent(getExistingFile( ResourceLocation.withDefaultNamespace("item/template_spawn_egg")));
+            }
+        }
 
+        singleTex(NDUItems.LAVA_PUFFERFISH_BUCKET);
+        singleTex(NDUItems.LAVA_PUFFERFISH);
+        singleTex(NDUItems.OBSIDIANFISH);
+        singleTex(NDUItems.OBSIDIANFISH_BUCKET);
+        singleTex(NDUItems.SEARING_COD_BUCKET);
+        singleTex(NDUItems.SEARING_COD);
+        singleTex(NDUItems.BONEFISH_BUCKET);
+        singleTex(NDUItems.BONEFISH);
+        singleTex(NDUItems.WITHER_BONEFISH_BUCKET);
+        singleTex(NDUItems.WITHER_BONEFISH);
+        singleTex(NDUItems.BLAZEFISH_BUCKET);
+        singleTex(NDUItems.BLAZEFISH);
+        singleTex(NDUItems.MAGMACUBEFISH_BUCKET);
+        singleTex(NDUItems.MAGMACUBEFISH);
+        singleTex(NDUItems.GLOWDINE_BUCKET);
+        singleTex(NDUItems.GLOWDINE);
+        singleTex(NDUItems.SOULSUCKER_BUCKET);
+        singleTex(NDUItems.SOULSUCKER);
+        singleTex(NDUItems.SOUL_SUCKER_LEATHER);
+        singleTex(NDUItems.FORTRESS_GROUPER);
+        singleTex(NDUItems.FORTRESS_GROUPER_BUCKET);
+        singleTex(NDUItems.EYEBALL_FISH);
+        singleTex(NDUItems.EYEBALL_FISH_BUCKET);
+        singleTex(NDUItems.FORTRESS_GROUPER_PLATE);
+        singleTex(NDUItems.EYEBALL_FISH_EYE);
+
+        toBlock(NDUBlocks.LAVA_SPONGE);
+        toBlock(NDUBlocks.WET_LAVA_SPONGE);
+        toBlock(NDUBlocks.WARPED_KELP_BLOCK);
+        toBlock(NDUBlocks.WARPED_KELP_CARPET_BLOCK);
+        toBlock(NDUBlocks.CRIMSON_KELP_BLOCK);
+        toBlock(NDUBlocks.CRIMSON_KELP_CARPET_BLOCK);
+        toBlock(NDUBlocks.LAVA_GLASS);
+
+        //singleTexFood(FarmersDelightCompat.BAKED_BLAZEFISH_STEW);
+        //singleTexFood(FarmersDelightCompat.BAKED_GLOWDINE_STEW);
+        //singleTexFood(FarmersDelightCompat.BAKED_LAVA_PUFFERFISH_STEW);
+        //singleTexFood(FarmersDelightCompat.BAKED_MAGMACUBEFISH_STEW);
+        //singleTexFood(FarmersDelightCompat.BAKED_OBSIDIANFISH_STEW);
+        //singleTexFood(FarmersDelightCompat.BAKED_SEARING_COD_STEW);
+        //singleTexFood(FarmersDelightCompat.BAKED_SOULSUCKER_STEW);
+        //singleTexFood(FarmersDelightCompat.SEARING_COD_SLICE);
+        //singleTexFood(FarmersDelightCompat.SOULSUCKER_SLICE);
+        //singleTexFood(FarmersDelightCompat.BLAZEFISH_SLICE);
+        //singleTexFood(FarmersDelightCompat.GLOWDINE_SLICE);
+        //singleTexFood(FarmersDelightCompat.LAVA_PUFFERFISH_SLICE);
+        //singleTexFood(FarmersDelightCompat.MAGMACUBEFISH_SLICE);
+        //singleTexFood(FarmersDelightCompat.OBSIDIANFISH_SLICE);
+        //singleTexFood(FarmersDelightCompat.COOKED_GLOWDINE_SLICE);
+        //singleTexFood(FarmersDelightCompat.COOKED_LAVA_PUFFERFISH_SLICE);
+        //singleTexFood(FarmersDelightCompat.COOKED_MAGMACUBEFISH_SLICE);
+        //singleTexFood(FarmersDelightCompat.COOKED_OBSIDIANFISH_SLICE);
+        //singleTexFood(FarmersDelightCompat.COOKED_SOULSUCKER_SLICE);
+        //singleTexFood(FarmersDelightCompat.BLAZEFISH_ROLL);
+        //singleTexFood(FarmersDelightCompat.SOULSUCKER_ROLL);
+        //singleTexFood(FarmersDelightCompat.GLOWDINE_ROLL);
+        //singleTexFood(FarmersDelightCompat.LAVA_PUFFERFISH_ROLL);
+        //singleTexFood(FarmersDelightCompat.MAGMA_CUBE_FISH_ROLL);
+        //singleTexFood(FarmersDelightCompat.SEARING_COD_ROLL);
+        //singleTexFood(FarmersDelightCompat.OBSIDIANFISH_ROLL);
+        //singleTexFood(FarmersDelightCompat.GRILLED_BLAZEFISH);
+        //singleTexFood(FarmersDelightCompat.GRILLED_LAVA_PUFFERFISH);
+        //singleTexFood(FarmersDelightCompat.GRILLED_GLOWDINE);
+        //singleTexFood(FarmersDelightCompat.GRILLED_OBSIDIANFISH);
+        //singleTexFood(FarmersDelightCompat.GRILLED_MAGMA_CUBE_FISH);
+        //singleTexFood(FarmersDelightCompat.GRILLED_SEARING_COD);
+        //singleTexFood(FarmersDelightCompat.GRILLED_SOULSUCKER);
+        //singleTexFood(FarmersDelightCompat.WARPED_KELP_ROLL_SLICE);
+        //singleTexFood(FarmersDelightCompat.WARPED_KELP_ROLL);
+        //singleTexFood(FarmersDelightCompat.NETHER_RICE_ROLL_MEDLEY_BLOCKITEM);
 
 
     }
@@ -114,6 +195,9 @@ public class ItemModelGenerator extends ItemModelProvider {
         return generated(item.getId().getPath(), prefix("item/" + item.getId().getPath()));
     }
 
+    private ItemModelBuilder singleTexFood(DeferredItem<Item> item) {
+        return generated(item.getId().getPath(), prefix("item/farmersdelight_compat_food/" + item.getId().getPath()));
+    }
     private ItemModelBuilder singleTexBlockItem(Block  item) {
         return generated(key(item).getPath(), prefix("item/" + key(item).getPath()));
     }

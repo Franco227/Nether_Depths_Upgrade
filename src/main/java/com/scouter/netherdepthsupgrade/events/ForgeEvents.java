@@ -88,7 +88,7 @@ public class ForgeEvents {
             if (player.isInLava() && player.isAffectedByFluids() && state.is(FluidTags.LAVA)) {
 
                 double e = player.getY();
-                float speed = (float) (1.15 + (0.1 * level));
+                float speed = (float) (1.15 + (0.35 * level));
                 player.setDeltaMovement(player.getDeltaMovement().multiply(speed, 0.8F, speed));
                 Vec3 vec33 = player.getFluidFallingAdjustedMovement(d0, flag, player.getDeltaMovement());
                 player.setDeltaMovement(vec33);

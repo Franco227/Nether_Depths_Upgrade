@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.logging.LogUtils;
 import com.scouter.netherdepthsupgrade.NetherDepthsUpgrade;
+import com.scouter.netherdepthsupgrade.blocks.NDUBlocks;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
@@ -95,7 +96,9 @@ public class SBlockStateGenerator extends BlockStateProvider {
     @Override
     protected void registerStatesAndModels() {
 
-        
+       simpleBlock(NDUBlocks.LAVA_SPONGE.get());
+       simpleBlock(NDUBlocks.WET_LAVA_SPONGE.get());
+       simpleBlock(NDUBlocks.LAVA_GLASS.get());
 
     }
 

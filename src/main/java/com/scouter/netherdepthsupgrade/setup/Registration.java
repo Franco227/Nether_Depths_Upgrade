@@ -27,7 +27,8 @@ public class Registration {
 
         IEventBus bus = ModLoadingContext.get().getActiveContainer().getEventBus();
         ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.COMMON, NetherDepthsUpgradeConfig.CONFIG_BUILDER);
-        NDUDataComponents.DATA_COMPONENTS.register(bus);
+        //NDUDataComponents.DATA_COMPONENTS.register(bus);
+        NDUDataComponents.ENCHANT_COMPONENT.register(bus);
         NDUBlocks.BLOCKS.register(bus);
         NDUBlockEntities.BLOCK_ENTITIES.register(bus);
         NDUEntity.ENTITY_TYPES.register(bus);

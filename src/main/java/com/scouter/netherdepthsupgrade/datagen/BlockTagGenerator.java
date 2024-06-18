@@ -2,6 +2,7 @@ package com.scouter.netherdepthsupgrade.datagen;
 
 import com.google.common.collect.ImmutableMap;
 import com.scouter.netherdepthsupgrade.NetherDepthsUpgrade;
+import com.scouter.netherdepthsupgrade.blocks.NDUBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.BlockFamily;
 import net.minecraft.data.PackOutput;
@@ -38,7 +39,13 @@ public class BlockTagGenerator extends BlockTagsProvider {
                     .build();
     @Override
     protected void addTags(HolderLookup.Provider pProvider) {
-
+        tag(BlockTags.MINEABLE_WITH_HOE)
+                .add(NDUBlocks.WARPED_KELP_BLOCK.get())
+                .add(NDUBlocks.CRIMSON_KELP_BLOCK.get())
+                .add(NDUBlocks.WET_LAVA_SPONGE.get())
+                .add(NDUBlocks.LAVA_SPONGE.get());
+        tag(BlockTags.IMPERMEABLE)
+                .add(NDUBlocks.LAVA_GLASS.get());
 
     }
     

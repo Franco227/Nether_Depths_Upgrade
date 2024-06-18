@@ -48,8 +48,8 @@ public class LavaSwimNodeEvaluator extends NodeEvaluator {
         return this.getTargetNodeAt(pX, pY, pZ);
     }
 
-    public Target getGoal(double p_77459_, double p_77460_, double p_77461_) {
-        return new Target(super.getNode(Mth.floor(p_77459_), Mth.floor(p_77460_), Mth.floor(p_77461_)));
+    protected Target getTargetNodeAt(double pX, double pY, double pZ) {
+        return new Target(this.getNode(Mth.floor(pX), Mth.floor(pY), Mth.floor(pZ)));
     }
 
     public int getNeighbors(Node[] p_77483_, Node p_77484_) {
@@ -57,7 +57,7 @@ public class LavaSwimNodeEvaluator extends NodeEvaluator {
         Map<Direction, Node> map = Maps.newEnumMap(Direction.class);
 
         for(Direction direction : Direction.values()) {
-            Node node = this.getNode(p_77484_.x + direction.getStepX(), p_77484_.y + direction.getStepY(), p_77484_.z + direction.getStepZ());
+            Node node = this.findAcceptedNode(p_77484_.x + direction.getStepX(), p_77484_.y + direction.getStepY(), p_77484_.z + direction.getStepZ());
             map.put(direction, node);
             if (this.isNodeValid(node)) {
                 p_77483_[i++] = node;
@@ -66,9 +66,12 @@ public class LavaSwimNodeEvaluator extends NodeEvaluator {
 
         for(Direction direction1 : Direction.Plane.HORIZONTAL) {
             Direction direction2 = direction1.getClockWise();
-            Node node1 = this.getNode(p_77484_.x + direction1.getStepX() + direction2.getStepX(), p_77484_.y, p_77484_.z + direction1.getStepZ() + direction2.getStepZ());
-            if (this.isDiagonalNodeValid(node1, map.get(direction1), map.get(direction2))) {
-                p_77483_[i++] = node1;
+            if (hasMalus(map.get(direction1)) && hasMalus(map.get(direction2))) {
+
+                Node node1 = this.findAcceptedNode(p_77484_.x + direction1.getStepX() + direction2.getStepX(), p_77484_.y, p_77484_.z + direction1.getStepZ() + direction2.getStepZ());
+                if (this.isDiagonalNodeValid(node1, map.get(direction1), map.get(direction2))) {
+                    p_77483_[i++] = node1;
+                }
             }
         }
 
@@ -76,10 +79,12 @@ public class LavaSwimNodeEvaluator extends NodeEvaluator {
     }
 
 
+    private static boolean hasMalus(@Nullable Node pNode) {
+        return pNode != null && pNode.costMalus >= 0.0F;
+    }
 
-
-    protected boolean isNodeValid(@Nullable Node p_192962_) {
-        return p_192962_ != null && !p_192962_.closed;
+    protected boolean isNodeValid(@Nullable Node pNode) {
+        return pNode != null && !pNode.closed;
     }
 
     protected boolean isDiagonalNodeValid(@Nullable Node p_192964_, @Nullable Node p_192965_, @Nullable Node p_192966_) {
@@ -90,7 +95,7 @@ public class LavaSwimNodeEvaluator extends NodeEvaluator {
      * Returns a mapped point or creates and adds one
      */
     @Nullable
-    protected Node getNode(int pX, int pY, int pZ) {
+    protected Node findAcceptedNode(int pX, int pY, int pZ) {
         Node node = null;
         PathType PathType = this.getCachedBlockType(pX, pY, pZ);
         if (this.allowBreaching && PathType == PathType.BREACH || PathType == PathType.WATER ||  PathType == PathType.LAVA) {
