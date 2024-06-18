@@ -53,7 +53,7 @@ public class DataGenerators {
         DatapackBuiltinEntriesProvider datapackProvider = new RegistryDataGenerator(packOutput, lookupProvider);
 
         CompletableFuture<HolderLookup.Provider> customLookupProvider = datapackProvider.getRegistryProvider();
-
+        generator.addProvider(event.includeServer(), datapackProvider);
 
         Map<PackType, Integer> packVersions = Arrays.stream(PackType.values())
                 .collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion));

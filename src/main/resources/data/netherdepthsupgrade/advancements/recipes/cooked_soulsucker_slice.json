@@ -1,0 +1,59 @@
+{
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "cooked_soulsucker_slice": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "netherdepthsupgrade:soulsucker_slice"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          },
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "netherdepthsupgrade:cooked_soulsucker_slice"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          }
+        },
+        "requirements": [
+          [
+            "cooked_soulsucker_slice",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "netherdepthsupgrade:cooked_soulsucker_slice"
+          ]
+        }
+      },
+      "conditions": [
+        {
+          "type": "forge:and",
+          "values": [
+            {
+              "type": "forge:mod_loaded",
+              "modid": "farmersdelight"
+            },
+            {
+              "type": "forge:item_exists",
+              "item": "netherdepthsupgrade:soulsucker_slice"
+            },
+            {
+              "type": "forge:item_exists",
+              "item": "netherdepthsupgrade:cooked_soulsucker_slice"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

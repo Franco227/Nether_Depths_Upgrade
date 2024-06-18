@@ -1,0 +1,59 @@
+{
+  "advancements": [
+    {
+      "advancement": {
+        "parent": "minecraft:recipes/root",
+        "criteria": {
+          "has_the_recipe": {
+            "conditions": {
+              "recipe": "netherdepthsupgrade:food/warped_kelp_roll"
+            },
+            "trigger": "minecraft:recipe_unlocked"
+          },
+          "has_warped_kelp": {
+            "conditions": {
+              "items": [
+                {
+                  "items": [
+                    "netherdepthsupgrade:warped_kelp"
+                  ]
+                }
+              ]
+            },
+            "trigger": "minecraft:inventory_changed"
+          }
+        },
+        "requirements": [
+          [
+            "has_warped_kelp",
+            "has_the_recipe"
+          ]
+        ],
+        "rewards": {
+          "recipes": [
+            "netherdepthsupgrade:food/warped_kelp_roll"
+          ]
+        }
+      },
+      "conditions": [
+        {
+          "type": "forge:and",
+          "values": [
+            {
+              "type": "forge:mod_loaded",
+              "modid": "farmersdelight"
+            },
+            {
+              "type": "forge:item_exists",
+              "item": "farmersdelight:cooked_rice"
+            },
+            {
+              "type": "forge:item_exists",
+              "item": "netherdepthsupgrade:warped_kelp"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

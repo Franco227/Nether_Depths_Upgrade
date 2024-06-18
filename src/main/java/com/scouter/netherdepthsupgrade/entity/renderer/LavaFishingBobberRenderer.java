@@ -38,10 +38,7 @@ public class LavaFishingBobberRenderer extends EntityRenderer<LavaFishingBobberE
             pMatrixStack.pushPose();
             pMatrixStack.scale(0.5F, 0.5F, 0.5F);
             pMatrixStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-            pMatrixStack.mulPose(Axis.YP.rotationDegrees(180.0F));
             PoseStack.Pose posestack$pose = pMatrixStack.last();
-            Matrix4f matrix4f = posestack$pose.pose();
-            Matrix3f matrix3f = posestack$pose.normal();
             VertexConsumer vertexconsumer = pBuffer.getBuffer(RENDER_TYPE);
             vertex(vertexconsumer, posestack$pose, pPackedLight, 0.0F, 0, 0, 1);
             vertex(vertexconsumer, posestack$pose, pPackedLight, 1.0F, 0, 1, 1);

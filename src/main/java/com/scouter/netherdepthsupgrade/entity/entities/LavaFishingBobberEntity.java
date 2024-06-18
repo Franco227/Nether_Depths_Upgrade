@@ -6,6 +6,7 @@ import com.scouter.netherdepthsupgrade.loot.NDULootTables;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -93,6 +94,15 @@ public class LavaFishingBobberEntity extends FishingHook implements IEntityWithC
 
         super.onSyncedDataUpdated(pKey);
     }
+
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
+        super.defineSynchedData(pBuilder);
+        pBuilder.define(DATA_HOOKED_ENTITY, 0);
+        pBuilder.define(DATA_BITING, false);
+    }
+
+
 
     private boolean shouldStopFishing(Player player) {
         ItemStack itemstack = player.getMainHandItem();
@@ -367,6 +377,7 @@ public class LavaFishingBobberEntity extends FishingHook implements IEntityWithC
                         .withParameter(LootContextParams.ORIGIN, this.position())
                         .withParameter(LootContextParams.TOOL, p_37157_)
                         .withParameter(LootContextParams.THIS_ENTITY, this)
+                        .withParameter(LootContextParams.ATTACKING_ENTITY, this.getOwner())
                         .withLuck((float)this.luck + player.getLuck())
                         .create(LootContextParamSets.FISHING);
 
