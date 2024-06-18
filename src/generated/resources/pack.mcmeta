@@ -1,0 +1,10 @@
+{
+  "pack": {
+    "description": "Resources for Nether Depths Upgrade",
+    "pack_format": 34,
+    "supported_formats": [
+      34,
+      48
+    ]
+  }
+}
