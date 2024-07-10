@@ -29,10 +29,7 @@ public abstract class LavaAnimal extends PathfinderMob {
         return false;
     }
 
-    //todo add to tags
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
+
 
 
     public boolean checkSpawnObstruction(LevelReader pLevel) {
@@ -84,7 +81,10 @@ public abstract class LavaAnimal extends PathfinderMob {
         return false;
     }
 
-    public boolean canBeLeashed(Player pPlayer) {
+
+
+    @Override
+    public boolean canBeLeashed() {
         return false;
     }
 

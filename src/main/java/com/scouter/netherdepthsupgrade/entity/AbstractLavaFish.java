@@ -176,6 +176,8 @@ public abstract class AbstractLavaFish extends LavaAnimal implements BucketableL
         return SoundEvents.BUCKET_FILL_FISH;
     }
 
+
+
     protected boolean canRandomSwim() {
         return true;
     }

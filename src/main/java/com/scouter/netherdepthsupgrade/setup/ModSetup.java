@@ -4,22 +4,16 @@ import com.scouter.netherdepthsupgrade.NetherDepthsUpgrade;
 import com.scouter.netherdepthsupgrade.entity.LavaAnimal;
 import com.scouter.netherdepthsupgrade.entity.NDUEntity;
 import com.scouter.netherdepthsupgrade.entity.entities.*;
-import com.scouter.netherdepthsupgrade.items.NDUItems;
 import com.scouter.netherdepthsupgrade.modcompat.ModChecker;
-import com.scouter.netherdepthsupgrade.potion.NDUPotions;
 import net.minecraft.world.entity.SpawnPlacementTypes;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.PotionBrewing;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
-import net.neoforged.neoforge.event.brewing.RegisterBrewingRecipesEvent;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
-import net.neoforged.neoforge.event.entity.SpawnPlacementRegisterEvent;
+import net.neoforged.neoforge.event.entity.RegisterSpawnPlacementsEvent;
 
 @EventBusSubscriber(modid = NetherDepthsUpgrade.MODID, bus = EventBusSubscriber.Bus.MOD)
 public class ModSetup {
@@ -36,21 +30,21 @@ public class ModSetup {
 
 
     @SubscribeEvent
-    public static void registerMobSpawns(SpawnPlacementRegisterEvent event) {
+    public static void registerMobSpawns(RegisterSpawnPlacementsEvent event) {
         entityPlacement(event);
     }
-    public  static void entityPlacement(SpawnPlacementRegisterEvent event) {
-        event.register(NDUEntity.OBSIDIAN_FISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NDUEntity.SEARING_COD.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NDUEntity.BLAZEFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NDUEntity.SOULSUCKER.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NDUEntity.WITHER_BONEFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NDUEntity.GLOWDINE.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NDUEntity.MAGMACUBEFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NDUEntity.BONEFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NDUEntity.LAVA_PUFFERFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NDUEntity.EYEBALL_FISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
-        event.register(NDUEntity.FORTRESS_GROUPER.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, SpawnPlacementRegisterEvent.Operation.AND);
+    public  static void entityPlacement(RegisterSpawnPlacementsEvent event) {
+        event.register(NDUEntity.OBSIDIAN_FISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(NDUEntity.SEARING_COD.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(NDUEntity.BLAZEFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(NDUEntity.SOULSUCKER.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(NDUEntity.WITHER_BONEFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(NDUEntity.GLOWDINE.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(NDUEntity.MAGMACUBEFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(NDUEntity.BONEFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(NDUEntity.LAVA_PUFFERFISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(NDUEntity.EYEBALL_FISH.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
+        event.register(NDUEntity.FORTRESS_GROUPER.get(), SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules, RegisterSpawnPlacementsEvent.Operation.AND);
     }
 
     @SubscribeEvent

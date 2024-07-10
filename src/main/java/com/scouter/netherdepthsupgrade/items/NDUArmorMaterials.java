@@ -34,8 +34,7 @@ public class NDUArmorMaterials {
             1F, 1F,
             () -> Ingredient.of(NDUItems.SOUL_SUCKER_LEATHER.get()),
             List.of(
-                    new ArmorMaterial.Layer(prefix("soul_sucker"), "", true),
-                    new ArmorMaterial.Layer(prefix("soul_sucker"), "_overlay", false)
+                    new ArmorMaterial.Layer(prefix("soul_sucker"), "", false)
             )
     );
 

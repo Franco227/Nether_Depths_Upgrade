@@ -25,11 +25,12 @@ public class FishBucketItem  extends MobBucketItem {
 
     @Override
     public void spawn(ServerLevel pServerLevel, ItemStack pBucketedMobStack, BlockPos pPos) {
-        Entity entity = type.spawn(pServerLevel, pBucketedMobStack, (Player)null, pPos, MobSpawnType.BUCKET, true, false);
         if (this.type.spawn(pServerLevel, pBucketedMobStack, null, pPos, MobSpawnType.BUCKET, true, false) instanceof BucketableLava bucketable) {
             CustomData customdata = pBucketedMobStack.getOrDefault(DataComponents.BUCKET_ENTITY_DATA, CustomData.EMPTY);
             bucketable.loadFromBucketTag(customdata.copyTag());
             bucketable.setFromBucket(true);
         }
     }
+
+
 }

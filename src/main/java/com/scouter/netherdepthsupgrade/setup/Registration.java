@@ -43,7 +43,7 @@ public class Registration {
         //NDUConfiguredFeatures.CONFIGURED_FEATURES.register(bus);
         //NDUConfiguredFeatures.PLACED_FEATURES.register(bus);
         NDUFeatures.FEATURES.register(bus);
-        NDUAdvancementTriggers.init();
+        NDUAdvancementTriggers.TRIGGERS.register(bus);
 
         //if(ModChecker.farmersDelightPresent){
         //    FarmersDelightCompat.ITEMS_FARMERS_DELIGHT.register(bus);

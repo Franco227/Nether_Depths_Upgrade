@@ -196,7 +196,7 @@ public class LavaPufferfishEntity extends AbstractLavaFish implements GeoEntity 
 
     @Override
     protected EntityDimensions getDefaultDimensions(Pose pPose) {
-        return super.getDimensions(pPose).scale(getScale(this.getPuffState()));
+        return  this.getType().getDimensions().scale(getScale(this.getPuffState()));
     }
 
     private static float getScale(int p_29639_) {

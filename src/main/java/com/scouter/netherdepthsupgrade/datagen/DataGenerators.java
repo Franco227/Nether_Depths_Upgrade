@@ -40,7 +40,8 @@ public class DataGenerators {
         generator.addProvider(event.includeClient(), new ItemModelGenerator(packOutput, existingFileHelper));
         generator.addProvider(event.includeServer(), new FluidTagGenerator(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new EntityTagGenerator(packOutput, lookupProvider, existingFileHelper));
-        generator.addProvider(event.includeServer(), new StructureUpdater("structures", packOutput, existingFileHelper));
+        generator.addProvider(event.includeServer(), new StructureUpdater("structure", packOutput, existingFileHelper));
+        generator.addProvider(true,new AdvancementProvider(packOutput, lookupProvider, existingFileHelper));
 
 
 
