@@ -56,7 +56,7 @@ public class DataGenerators {
 
         CompletableFuture<HolderLookup.Provider> customLookupProvider = datapackProvider.getRegistryProvider();
         generator.addProvider(event.includeServer(), datapackProvider);
-
+        generator.addProvider(true,new EnchantmenTagGenerator(  packOutput, customLookupProvider, existingFileHelper));
         Map<PackType, Integer> packVersions = Arrays.stream(PackType.values())
                 .collect(Collectors.toMap(Function.identity(), DetectedVersion.BUILT_IN::getPackVersion));
 

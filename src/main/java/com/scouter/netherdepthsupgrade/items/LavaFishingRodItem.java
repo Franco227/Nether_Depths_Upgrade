@@ -35,9 +35,9 @@ public class LavaFishingRodItem extends FishingRodItem {
             pLevel.playSound((Player)null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.FISHING_BOBBER_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
             if (!pLevel.isClientSide) {
                 ServerLevel serverLevel = (ServerLevel)pLevel;
-                int j = (int)(EnchantmentHelper.getFishingTimeReduction(serverLevel, itemstack, pPlayer) * 20.0F);
-                int k = EnchantmentHelper.getFishingLuckBonus(serverLevel, itemstack, pPlayer);
-                pLevel.addFreshEntity(new LavaFishingBobberEntity(pPlayer, pLevel, j, k));
+                int lure = (int)(EnchantmentHelper.getFishingTimeReduction(serverLevel, itemstack, pPlayer) * 20.0F);
+                int luck = EnchantmentHelper.getFishingLuckBonus(serverLevel, itemstack, pPlayer);
+                pLevel.addFreshEntity(new LavaFishingBobberEntity(pPlayer, pLevel, luck, lure));
             }
 
             pPlayer.awardStat(Stats.ITEM_USED.get(this));
