@@ -3,7 +3,6 @@ package com.scouter.netherdepthsupgrade.effect;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,17 +13,16 @@ public class LavaVisionEffect extends MobEffect {
     }
 
     @Override
-    public void applyEffectTick(@NotNull LivingEntity livingEntity, int amplifier) {
+    public boolean applyEffectTick(LivingEntity livingEntity, int i) {
         if(livingEntity.isOnFire()){
             livingEntity.clearFire();
-
         }
-        super.applyEffectTick(livingEntity, amplifier);
+        return super.applyEffectTick(livingEntity, i);
     }
-
 
     @Override
-    public boolean isDurationEffectTick(int p_19631_, int p_19632_) {
+    public boolean shouldApplyEffectTickThisTick(int i, int j) {
         return true;
     }
+
 }

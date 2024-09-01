@@ -1,10 +1,8 @@
 plugins {
-	id 'fabric-loom' version '1.0-SNAPSHOT'
+	id 'fabric-loom' version '1.6-SNAPSHOT'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -18,7 +16,14 @@ repositories {
 	// for more information about repositories.
 	maven { url = "https://maven.parchmentmc.org"}
 	maven { url "https://www.cursemaven.com" }
-	maven { url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/' }
+	maven {
+		name = 'GeckoLib'
+		url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+		content {
+			includeGroupByRegex("software\\.bernie.*")
+			includeGroup("com.eliotlash.mclib")
+		}
+	}
 	maven { url 'https://maven.shedaniel.me/' }
 
 }
@@ -39,12 +44,13 @@ dependencies {
 
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-	modImplementation 'software.bernie.geckolib:geckolib-fabric-1.20:4.2'
-	modCompileOnlyApi "curse.maven:jei-238222:4644452"
-	modRuntimeOnly "curse.maven:jei-238222:4644452"
+	modImplementation("software.bernie.geckolib:geckolib-fabric-${minecraft_version}:${geckolib_version}")
+	implementation("com.eliotlash.mclib:mclib:20")
+	//modCompileOnlyApi "curse.maven:jei-238222:4644452"
+	//modRuntimeOnly "curse.maven:jei-238222:4644452"
 //
-	modImplementation "curse.maven:farmersdelight-482834:4640640"
-	modRuntimeOnly "curse.maven:farmersdelight-482834:4640640"
+	//modImplementation "curse.maven:farmersdelight-482834:4640640"
+	//modRuntimeOnly "curse.maven:farmersdelight-482834:4640640"
 }
 
 processResources {
@@ -57,7 +63,7 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
 	// Minecraft 1.18 (1.18-pre2) upwards uses Java 17.
-	it.options.release = 17
+	it.options.release = 21
 }
 
 java {
@@ -65,6 +71,8 @@ java {
 	// if it is present.
 	// If you remove this line, sources will not be generated.
 	withSourcesJar()
+	sourceCompatibility = JavaVersion.VERSION_21
+	targetCompatibility = JavaVersion.VERSION_21
 }
 
 jar {

@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     "minecraft:crimson_forest",
     "minecraft:soul_sand_valley",
@@ -9,14 +8,6 @@
     },
     {
       "id": "gardens_of_the_dead:whistling_woods",
-      "required": false
-    },
-    {
-      "id": "betternether:gravel_desert",
-      "required": false
-    },
-    {
-      "id": "betternether:bone_reef",
       "required": false
     }
   ]

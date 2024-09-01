@@ -25,7 +25,7 @@ public class LavaBoundPathNavigation extends PathNavigation {
      * If on ground or swimming and can swim
      */
     protected boolean canUpdatePath() {
-        return this.allowBreaching || this.isInLiquid();
+        return this.allowBreaching || this.mob.isInLiquid();
     }
 
     protected Vec3 getTempMobPos() {

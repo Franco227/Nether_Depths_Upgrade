@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "netherdepthsupgrade:warped_kelp_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "id": "netherdepthsupgrade:warped_kelp"
+  }
+}

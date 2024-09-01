@@ -1,10 +1,12 @@
 package com.scouter.netherdepthsupgrade.blocks;
 
+import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -18,8 +20,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public class CrimsonSeagrassBlock extends BushBlock implements BonemealableBlock, LiquidBlockContainer {
     protected static final float AABB_OFFSET = 6.0F;
@@ -27,6 +28,11 @@ public class CrimsonSeagrassBlock extends BushBlock implements BonemealableBlock
 
     public CrimsonSeagrassBlock(Properties p_154496_) {
         super(p_154496_);
+    }
+
+    @Override
+    protected MapCodec<? extends BushBlock> codec() {
+        return null;
     }
 
     public VoxelShape getShape(BlockState p_154525_, BlockGetter p_154526_, BlockPos p_154527_, CollisionContext p_154528_) {
@@ -58,14 +64,11 @@ public class CrimsonSeagrassBlock extends BushBlock implements BonemealableBlock
         return blockstate;
     }
 
-    /**
-     * @return whether bonemeal can be used on this block
-     */
+
     @Override
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         return true;
     }
-
 
     public boolean isBonemealSuccess(Level p_154515_, RandomSource p_154516_, BlockPos p_154517_, BlockState p_154518_) {
         return true;
@@ -86,7 +89,8 @@ public class CrimsonSeagrassBlock extends BushBlock implements BonemealableBlock
 
     }
 
-    public boolean canPlaceLiquid(BlockGetter p_154505_, BlockPos p_154506_, BlockState p_154507_, Fluid p_154508_) {
+    @Override
+    public boolean canPlaceLiquid(@Nullable Player player, BlockGetter blockGetter, BlockPos blockPos, BlockState blockState, Fluid fluid) {
         return false;
     }
 

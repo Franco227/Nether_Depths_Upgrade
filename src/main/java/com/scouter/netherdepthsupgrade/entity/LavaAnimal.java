@@ -6,30 +6,23 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobSpawnType;
-import net.minecraft.world.entity.MobType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.pathfinder.BlockPathTypes;
+import net.minecraft.world.level.pathfinder.PathType;
 import org.slf4j.Logger;
 
 public abstract class LavaAnimal extends PathfinderMob {
     private static final Logger LOGGER = LogUtils.getLogger();
     protected LavaAnimal(EntityType<? extends LavaAnimal> p_30341_, Level p_30342_) {
         super(p_30341_, p_30342_);
-        this.setPathfindingMalus(BlockPathTypes.LAVA, 0.0F);
+        this.setPathfindingMalus(PathType.LAVA, 0.0F);
     }
 
-    public boolean canBreatheUnderwater() {
-        return true;
-    }
 
-    public MobType getMobType() {
-        return NDUMobType.LAVA;
-    }
 
     public boolean checkSpawnObstruction(LevelReader pLevel) {
         return pLevel.isUnobstructed(this);
@@ -42,13 +35,11 @@ public abstract class LavaAnimal extends PathfinderMob {
         return 120;
     }
 
-    /**
-     * Get the experience points the entity currently has.
-     */
-
-    public int getExperienceReward() {
+    @Override
+    protected int getBaseExperienceReward() {
         return 1 + this.level().random.nextInt(3);
     }
+
 
     protected void handleAirSupply(int p_30344_) {
         if (this.isAlive() && !this.isInLava()) {
@@ -76,9 +67,13 @@ public abstract class LavaAnimal extends PathfinderMob {
         return false;
     }
 
-    public boolean canBeLeashed(Player pPlayer) {
-        return false;
+    @Override
+    public boolean canBeLeashed() {
+
+            return false;
+
     }
+
 
     public static boolean checkSurfaceLavaAnimalSpawnRules(EntityType<? extends LavaAnimal> entityType, LevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource randomSource) {
         int i = 40;

@@ -21,15 +21,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.material.Fluids;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import software.bernie.geckolib.animatable.GeoEntity;
-import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
-import software.bernie.geckolib.core.animation.AnimatableManager;
-import software.bernie.geckolib.core.animation.AnimationController;
-import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.animation.AnimatableManager;
+import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
@@ -82,7 +82,7 @@ public class SoulSuckerEntity extends AbstractLavaFish implements GeoEntity {
     }
 
     protected SoundEvent getDeathSound() {
-        return SoundEvents.SOUL_ESCAPE;
+        return SoundEvents.SOUL_ESCAPE.value();
     }
 
     protected SoundEvent getHurtSound(DamageSource pDamageSource) {
@@ -102,13 +102,14 @@ public class SoulSuckerEntity extends AbstractLavaFish implements GeoEntity {
         return this.cache;
     }
 
-
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(SOULSAND_POS, BlockPos.ZERO);
-        this.entityData.define(SEEK_SOULSAND_TIMER, 0);
-        this.entityData.define(COOLDOWN_TTIMER, 0);
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
+        super.defineSynchedData(pBuilder);
+        pBuilder.define(SOULSAND_POS, BlockPos.ZERO);
+        pBuilder.define(SEEK_SOULSAND_TIMER, 0);
+        pBuilder.define(COOLDOWN_TTIMER, 0);
     }
+
 
     public void addAdditionalSaveData(CompoundTag pCompound) {
         super.addAdditionalSaveData(pCompound);

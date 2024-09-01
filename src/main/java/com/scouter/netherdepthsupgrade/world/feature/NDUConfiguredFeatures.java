@@ -29,7 +29,7 @@ public class NDUConfiguredFeatures {
     private static final ResourceKey<ConfiguredFeature<?, ?>> LAVA_SPONGE_FEATURE_NAME_PLACED = registerKey("lava_sponge_feature_placed");
     
     public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
-        return ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(NetherDepthsUpgrade.MODID, name));
+        return ResourceKey.create(Registries.CONFIGURED_FEATURE,  ResourceLocation.fromNamespaceAndPath(NetherDepthsUpgrade.MODID, name));
     }
 
     /*

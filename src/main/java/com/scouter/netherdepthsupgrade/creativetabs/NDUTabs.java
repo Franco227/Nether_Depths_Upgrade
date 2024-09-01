@@ -3,12 +3,15 @@ package com.scouter.netherdepthsupgrade.creativetabs;
 import com.scouter.netherdepthsupgrade.NetherDepthsUpgrade;
 import com.scouter.netherdepthsupgrade.items.NDUItems;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.Enchantments;
 
 import static com.scouter.netherdepthsupgrade.NetherDepthsUpgrade.prefix;
@@ -77,8 +80,10 @@ public class NDUTabs {
                 entries.accept(NDUItems.SOUL_SUCKER_LEATHER);
                 entries.accept(NDUItems.FORTRESS_GROUPER_PLATE);
                 entries.accept(NDUItems.EYEBALL_FISH_EYE);
-                generateEnchantsForBoots(entries, NDUItems.SOUL_SUCKER_BOOTS, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-                entries.accept(NDUItems.LAVA_FISHING_ROD);
+                enabledFeatures.holders().lookup(Registries.ENCHANTMENT).ifPresent(enchantmentRegistryLookup -> {
+                    generateEnchantsForBoots(entries, enchantmentRegistryLookup,NDUItems.SOUL_SUCKER_BOOTS, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+
+                });                entries.accept(NDUItems.LAVA_FISHING_ROD);
             })
             .icon(NDUItems.WARPED_KELP::getDefaultInstance)
             .build();
@@ -89,9 +94,11 @@ public class NDUTabs {
     private static CreativeModeTab creativeModeTab(String name, CreativeModeTab item) {
         return Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, prefix(name), item);
     }
-    private static void generateEnchantsForBoots(CreativeModeTab.Output output, Item item, CreativeModeTab.TabVisibility tabVisibility) {
+    private static void generateEnchantsForBoots(CreativeModeTab.Output output, HolderLookup<Enchantment> lookup, Item item, CreativeModeTab.TabVisibility tabVisibility) {
         ItemStack soulsuckerBoots = new ItemStack(item);
-        soulsuckerBoots.enchant(Enchantments.SOUL_SPEED, 3);
+        lookup.get(Enchantments.SOUL_SPEED).ifPresent(e -> {
+            soulsuckerBoots.enchant(e, 3);
+        });
         output.accept(soulsuckerBoots, tabVisibility);
     }
 

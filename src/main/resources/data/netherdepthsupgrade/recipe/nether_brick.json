@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "netherdepthsupgrade:fortress_grouper_plate"
+    }
+  },
+  "pattern": [
+    "cc",
+    "cc"
+  ],
+  "result": {
+    "count": 4,
+    "id": "minecraft:nether_brick"
+  }
+}

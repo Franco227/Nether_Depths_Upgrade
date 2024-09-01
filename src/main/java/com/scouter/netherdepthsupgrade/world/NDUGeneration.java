@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.biome.v1.ModificationPhase;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
@@ -76,17 +77,17 @@ public class NDUGeneration {
         BiomeModifications.addSpawn(BiomeSelectors.tag(NDUTags.Biomes.IS_EYEBALL_FISH_BIOME), MobCategory.WATER_AMBIENT, NDUEntity.EYEBALL_FISH, 3,2,4);
 
 
-        SpawnPlacements.register(NDUEntity.OBSIDIAN_FISH, SpawnPlacements.Type.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
-        SpawnPlacements.register(NDUEntity.SEARING_COD, SpawnPlacements.Type.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
-        SpawnPlacements.register(NDUEntity.BLAZEFISH, SpawnPlacements.Type.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
-        SpawnPlacements.register(NDUEntity.SOULSUCKER, SpawnPlacements.Type.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
-        SpawnPlacements.register(NDUEntity.WITHER_BONEFISH, SpawnPlacements.Type.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
-        SpawnPlacements.register(NDUEntity.GLOWDINE, SpawnPlacements.Type.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
-        SpawnPlacements.register(NDUEntity.MAGMACUBEFISH, SpawnPlacements.Type.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
-        SpawnPlacements.register(NDUEntity.BONEFISH, SpawnPlacements.Type.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
-        SpawnPlacements.register(NDUEntity.LAVA_PUFFERFISH, SpawnPlacements.Type.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
-        SpawnPlacements.register(NDUEntity.FORTRESS_GROUPER, SpawnPlacements.Type.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
-        SpawnPlacements.register(NDUEntity.EYEBALL_FISH, SpawnPlacements.Type.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
+        SpawnPlacements.register(NDUEntity.OBSIDIAN_FISH, SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
+        SpawnPlacements.register(NDUEntity.SEARING_COD, SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
+        SpawnPlacements.register(NDUEntity.BLAZEFISH, SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
+        SpawnPlacements.register(NDUEntity.SOULSUCKER, SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
+        SpawnPlacements.register(NDUEntity.WITHER_BONEFISH, SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
+        SpawnPlacements.register(NDUEntity.GLOWDINE, SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
+        SpawnPlacements.register(NDUEntity.MAGMACUBEFISH, SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
+        SpawnPlacements.register(NDUEntity.BONEFISH, SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
+        SpawnPlacements.register(NDUEntity.LAVA_PUFFERFISH, SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
+        SpawnPlacements.register(NDUEntity.FORTRESS_GROUPER, SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
+        SpawnPlacements.register(NDUEntity.EYEBALL_FISH, SpawnPlacementTypes.IN_LAVA, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, LavaAnimal::checkSurfaceLavaAnimalSpawnRules);
     }
 
     public static void addPlacedFeature(String name){

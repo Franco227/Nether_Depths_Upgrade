@@ -1,0 +1,33 @@
+{
+  "parent": "netherdepthsupgrade:main/root",
+  "criteria": {
+    "eyeball_fish": {
+      "conditions": {
+        "items": [
+          {
+            "items": "netherdepthsupgrade:eyeball_fish"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "netherdepthsupgrade.advancement.get_eyeball_fish.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "netherdepthsupgrade:eyeball_fish"
+    },
+    "title": {
+      "translate": "netherdepthsupgrade.advancement.get_eyeball_fish"
+    }
+  },
+  "requirements": [
+    [
+      "eyeball_fish"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -12,7 +12,7 @@ public class NDUItemProperties {
     }
 
     private static void makeFishingRod(Item item){
-        ItemProperties.register(item, new ResourceLocation("cast"), (p_174595_, p_174596_, p_174597_, p_174598_) -> {
+        ItemProperties.register(item,  ResourceLocation.withDefaultNamespace("cast"), (p_174595_, p_174596_, p_174597_, p_174598_) -> {
         if (p_174597_ == null) {
             return 0.0F;
         } else {

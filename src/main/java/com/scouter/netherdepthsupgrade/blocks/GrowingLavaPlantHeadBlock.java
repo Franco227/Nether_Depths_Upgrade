@@ -93,12 +93,11 @@ public abstract class GrowingLavaPlantHeadBlock extends GrowingLavaPlantBlock im
         pBuilder.add(AGE);
     }
 
-    /**
-     * @return whether bonemeal can be used on this block
-     */
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
-        return this.canGrowInto(pLevel.getBlockState(pPos.relative(this.growthDirection)));
+    @Override
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+        return this.canGrowInto(levelReader.getBlockState(blockPos.relative(this.growthDirection)));
     }
+
 
     public boolean isBonemealSuccess(Level pLevel, RandomSource pRand, BlockPos pPos, BlockState pState) {
         return true;

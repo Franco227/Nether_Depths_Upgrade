@@ -4,6 +4,7 @@ import com.scouter.netherdepthsupgrade.advancements.NDUAdvancementTriggers;
 import com.scouter.netherdepthsupgrade.blocks.NDUBlocks;
 import com.scouter.netherdepthsupgrade.blocks.entity.NDUBlockEntities;
 import com.scouter.netherdepthsupgrade.creativetabs.NDUTabs;
+import com.scouter.netherdepthsupgrade.datacomponents.NDUDataComponents;
 import com.scouter.netherdepthsupgrade.effect.MobEffects;
 import com.scouter.netherdepthsupgrade.enchantments.NDUEnchantments;
 import com.scouter.netherdepthsupgrade.entity.NDUEntity;
@@ -28,6 +29,8 @@ public class Registration {
         NDUEntity.ENTITY_TYPES();
         MobEffects.MOBEFFECTS();
         NDUPotions.POTIONS();
+        NDUDataComponents.ENCHANTMENT_COMPONENTS();
+
         NDUEnchantments.ENCHANTMENTS();
         NDUParticle.PARTICLE();
         NDUFeatures.FEATURES();
@@ -38,7 +41,6 @@ public class Registration {
         NDUGeneration.generateFeatures();
         NDUGeneration.spawnCreatures();
         NDUAdvancementTriggers.init();
-
     }
 
 

@@ -27,9 +27,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 
-import javax.annotation.Nullable;
 import java.util.EnumSet;
 
 public abstract class AbstractLavaFish extends LavaAnimal implements BucketableLava {
@@ -45,9 +45,11 @@ public abstract class AbstractLavaFish extends LavaAnimal implements BucketableL
         this.moveControl = new FishMoveControl(this);
     }
 
-    protected float getStandingEyeHeight(Pose pPose, EntityDimensions pSize) {
-        return pSize.height * 0.65F;
+    @Override
+    public double getEyeY() {
+        return this.position().y + (double)this.getEyeHeight() * 0.65F;
     }
+
 
     public static AttributeSupplier setAttributes() {
         return Mob.createMobAttributes().add(Attributes.MAX_HEALTH, 3.0D)
@@ -70,10 +72,11 @@ public abstract class AbstractLavaFish extends LavaAnimal implements BucketableL
         return 8;
     }
 
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.entityData.define(FROM_BUCKET, false);
-        this.entityData.define(JUMPING, Boolean.valueOf(false));
+    @Override
+    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
+        super.defineSynchedData(pBuilder);
+        pBuilder.define(FROM_BUCKET, false);
+        pBuilder.define(JUMPING, Boolean.valueOf(false));
     }
 
     public boolean fromBucket() {

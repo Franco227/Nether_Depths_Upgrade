@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     "minecraft:basalt_deltas",
     {
@@ -8,10 +7,6 @@
     },
     {
       "id": "byg:magma_wastes",
-      "required": false
-    },
-    {
-      "id": "betternether:magma_land",
       "required": false
     }
   ]

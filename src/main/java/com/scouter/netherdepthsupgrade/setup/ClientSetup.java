@@ -36,7 +36,6 @@ public class ClientSetup implements ClientModInitializer {
         RenderType cutoutMipped = RenderType.cutoutMipped();
         RenderType cutout = RenderType.cutout();
         RenderType translucent = RenderType.translucent();
-        RenderType translucentnocrumb = RenderType.translucentNoCrumbling();
         RenderType solid = RenderType.solid();
 
         BlockRenderLayerMap.INSTANCE.putBlock(NDUBlocks.WARPED_KELP, cutout);

@@ -8,9 +8,6 @@ import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -43,11 +40,10 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -111,18 +107,12 @@ public class LavaFishingBobberEntity extends FishingHook {
 
 
 
-    @Nonnull
+
     @Override
-    public Packet<ClientGamePacketListener> getAddEntityPacket() {
-        Entity entity = this.getOwner();
-        return new ClientboundAddEntityPacket(this, entity == null ? this.getId() : entity.getId());
-    }
-
-
-    protected void defineSynchedData() {
-        super.defineSynchedData();
-        this.getEntityData().define(DATA_HOOKED_ENTITY, 0);
-        this.getEntityData().define(DATA_BITING, false);
+    protected void defineSynchedData(SynchedEntityData.Builder pBuilder) {
+        super.defineSynchedData(pBuilder);
+        pBuilder.define(DATA_HOOKED_ENTITY, 0);
+        pBuilder.define(DATA_BITING, false);
     }
 
 
@@ -425,8 +415,8 @@ public class LavaFishingBobberEntity extends FishingHook {
                         .withParameter(LootContextParams.ORIGIN, this.position())
                         .withParameter(LootContextParams.TOOL, p_37157_)
                         .withParameter(LootContextParams.THIS_ENTITY, this)
+                        //.withParameter(LootContextParams.ATTACKING_ENTITY, this.getOwner())
                         .withLuck((float)this.luck + player.getLuck())
-                        //.withParameter(LootContextParams.KILLER_ENTITY, this.getOwner())
                         .create(LootContextParamSets.FISHING);
 
 
@@ -437,13 +427,13 @@ public class LavaFishingBobberEntity extends FishingHook {
                         .getBlockState(BlockPos.containing(this.position().x, d - 1.0D, this.position().z));
                 if(blockstate.is(Blocks.LAVA)) {
                     if (this.level().dimension() == Level.NETHER) {
-                        loottable = Objects.requireNonNull(this.level().getServer()).getLootData().getLootTable(NDULootTables.NETHER_FISHING);
+                        loottable = Objects.requireNonNull(this.level().getServer()).reloadableRegistries().getLootTable(NDULootTables.NETHER_FISHING);
                     } else {
-                        loottable = Objects.requireNonNull(this.level().getServer()).getLootData().getLootTable(NDULootTables.LAVA_FISHING);
+                        loottable = Objects.requireNonNull(this.level().getServer()).reloadableRegistries().getLootTable(NDULootTables.LAVA_FISHING);
                     }
 
                 }else {
-                    loottable = Objects.requireNonNull(this.level().getServer()).getLootData().getLootTable(NDULootTables.FAILED_FISHING);
+                    loottable = Objects.requireNonNull(this.level().getServer()).reloadableRegistries().getLootTable(NDULootTables.FAILED_FISHING);
                 }
                 if(loottable == null){
                     this.discard();
@@ -581,7 +571,7 @@ public class LavaFishingBobberEntity extends FishingHook {
         this.getEntityData().set(DATA_HOOKED_ENTITY, entity == null ? 0 : entity.getId() + 1);
     }
 
-    @Nonnull
+
     @Override
     public EntityType<?> getType() {
         return NDUEntity.LAVA_BOBBER;

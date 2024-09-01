@@ -4,9 +4,8 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
-
-import javax.annotation.Nullable;
 
 public class RandomLavaSwimmingGoal extends RandomStrollGoal {
     private static final Logger LOGGER = LogUtils.getLogger();

@@ -7,9 +7,8 @@ import net.minecraft.tags.FluidTags;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.util.DefaultRandomPos;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
-
-import javax.annotation.Nullable;
 
 public class FishSwimGoal extends RandomStrollGoal {
     private static final Logger LOGGER = LogUtils.getLogger();

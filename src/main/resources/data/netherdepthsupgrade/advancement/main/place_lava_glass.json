@@ -1,0 +1,34 @@
+{
+  "parent": "netherdepthsupgrade:main/root",
+  "criteria": {
+    "place_lava_glass": {
+      "conditions": {
+        "location": [
+          {
+            "block": "netherdepthsupgrade:lava_glass",
+            "condition": "minecraft:block_state_property"
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "netherdepthsupgrade.advancement.place_lava_glass.desc"
+    },
+    "icon": {
+      "count": 1,
+      "id": "netherdepthsupgrade:lava_glass"
+    },
+    "title": {
+      "translate": "netherdepthsupgrade.advancement.place_lava_glass"
+    }
+  },
+  "requirements": [
+    [
+      "place_lava_glass"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -19,8 +19,8 @@ public class ModChecker {
 
         try{
 
-            modid = "farmersdelight";
-            loadModCompat(modid, () -> FarmersDelightCompat.setupCompat());
+            //modid = "farmersdelight";
+            //loadModCompat(modid, () -> FarmersDelightCompat.setupCompat());
 
             modid = "byg";
             loadModCompat(modid, () -> BiomesYoullGoCompat.setupCompatPreInit());

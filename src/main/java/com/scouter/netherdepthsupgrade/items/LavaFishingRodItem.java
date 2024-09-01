@@ -1,11 +1,13 @@
 package com.scouter.netherdepthsupgrade.items;
 
 import com.scouter.netherdepthsupgrade.entity.entities.LavaFishingBobberEntity;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.ItemStack;
@@ -23,9 +25,7 @@ public class LavaFishingRodItem extends FishingRodItem {
         if (pPlayer.fishing != null) {
             if (!pLevel.isClientSide) {
                 int i = pPlayer.fishing.retrieve(itemstack);
-                itemstack.hurtAndBreak(i, pPlayer, (p_41288_) -> {
-                    p_41288_.broadcastBreakEvent(pHand);
-                });
+                itemstack.hurtAndBreak(i, pPlayer, LivingEntity.getSlotForHand(pHand));
             }
 
             pLevel.playSound((Player)null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.FISHING_BOBBER_RETRIEVE, SoundSource.NEUTRAL, 1.0F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
@@ -33,9 +33,10 @@ public class LavaFishingRodItem extends FishingRodItem {
         } else {
             pLevel.playSound((Player)null, pPlayer.getX(), pPlayer.getY(), pPlayer.getZ(), SoundEvents.FISHING_BOBBER_THROW, SoundSource.NEUTRAL, 0.5F, 0.4F / (pLevel.getRandom().nextFloat() * 0.4F + 0.8F));
             if (!pLevel.isClientSide) {
-                int k = EnchantmentHelper.getFishingSpeedBonus(itemstack);
-                int j = EnchantmentHelper.getFishingLuckBonus(itemstack);
-                pLevel.addFreshEntity(new LavaFishingBobberEntity(pPlayer, pLevel, j, k));
+                ServerLevel serverLevel = (ServerLevel)pLevel;
+                int lure = (int)(EnchantmentHelper.getFishingTimeReduction(serverLevel, itemstack, pPlayer) * 20.0F);
+                int luck = EnchantmentHelper.getFishingLuckBonus(serverLevel, itemstack, pPlayer);
+                pLevel.addFreshEntity(new LavaFishingBobberEntity(pPlayer, pLevel, luck, lure));
             }
 
             pPlayer.awardStat(Stats.ITEM_USED.get(this));

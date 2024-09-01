@@ -2,6 +2,7 @@ package com.scouter.netherdepthsupgrade.blocks.entity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -42,24 +43,22 @@ public class LavaGlassBlockEntity extends BlockEntity {
         super(NDUBlockEntities.LAVA_GLASS, pPos, pBlockState);
     }
 
-
     @Override
-    protected void saveAdditional(CompoundTag pTag) {
-        super.saveAdditional(pTag);
+    protected void saveAdditional(CompoundTag compoundTag, HolderLookup.Provider provider) {
+        super.saveAdditional(compoundTag, provider);
         ListTag occlusionDirStrings = new ListTag();
         for (Direction direction : occlusionDirs) {
-            CompoundTag compoundTag = new CompoundTag();
-            compoundTag.putString("dir", direction.toString());
+            CompoundTag tag = new CompoundTag();
+            tag.putString("dir", direction.toString());
 
-            occlusionDirStrings.add(compoundTag);
+            occlusionDirStrings.add(tag);
         }
-        pTag.put("occlusiondirs", occlusionDirStrings);
-
+        compoundTag.put("occlusiondirs", occlusionDirStrings);
     }
 
     @Override
-    public void load(CompoundTag pTag) {
-        super.load(pTag);
+    protected void loadAdditional(CompoundTag pTag, HolderLookup.Provider provider) {
+        super.loadAdditional(pTag, provider);
         ListTag occlusionDirTag = pTag.getList("occlusiondirs", Tag.TAG_COMPOUND);
         for (int i = 0; i < occlusionDirTag.size(); i++) {
             CompoundTag dirCompoundTag = occlusionDirTag.getCompound(i);
@@ -78,6 +77,7 @@ public class LavaGlassBlockEntity extends BlockEntity {
         setOcclusionShape(shape);
     }
 
+
     //@Override
     //public void handleUpdateTag(CompoundTag tag) {
     //    super.handleUpdateTag(tag);
@@ -93,7 +93,7 @@ public class LavaGlassBlockEntity extends BlockEntity {
     //}
 
     @Override
-    public CompoundTag getUpdateTag() {
+    public CompoundTag getUpdateTag(HolderLookup.Provider provider) {
         CompoundTag compoundTag = new CompoundTag();
         ListTag occlusionDirStrings = new ListTag();
         for (Direction direction : occlusionDirs) {

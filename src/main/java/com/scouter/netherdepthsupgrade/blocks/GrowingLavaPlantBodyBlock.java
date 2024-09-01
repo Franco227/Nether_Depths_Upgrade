@@ -51,16 +51,17 @@ public abstract class GrowingLavaPlantBodyBlock extends GrowingLavaPlantBlock im
         }
     }
 
-    public ItemStack getCloneItemStack(BlockGetter pLevel, BlockPos pPos, BlockState pState) {
+    @Override
+    public ItemStack getCloneItemStack(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
         return new ItemStack(this.getHeadBlock());
     }
 
-    /**
-     * @return whether bonemeal can be used on this block
-     */
-    public boolean isValidBonemealTarget(LevelReader pLevel, BlockPos pPos, BlockState pState, boolean pIsClient) {
-        Optional<BlockPos> optional = this.getHeadPos(pLevel, pPos, pState.getBlock());
-        return optional.isPresent() && this.getHeadBlock().canGrowInto(pLevel.getBlockState(optional.get().relative(this.growthDirection)));
+
+
+    @Override
+    public boolean isValidBonemealTarget(LevelReader levelReader, BlockPos blockPos, BlockState blockState) {
+        Optional<BlockPos> optional = this.getHeadPos(levelReader, blockPos, blockState.getBlock());
+        return optional.isPresent() && this.getHeadBlock().canGrowInto(levelReader.getBlockState(optional.get().relative(this.growthDirection)));
     }
 
     public boolean isBonemealSuccess(Level pLevel, RandomSource pRandom, BlockPos pPos, BlockState pState) {

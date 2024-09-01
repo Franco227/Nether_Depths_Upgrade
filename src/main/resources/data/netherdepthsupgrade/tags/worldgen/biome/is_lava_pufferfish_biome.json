@@ -1,5 +1,4 @@
 {
-  "replace": false,
   "values": [
     "minecraft:crimson_forest",
     "minecraft:warped_forest",
@@ -9,26 +8,6 @@
     },
     {
       "id": "byg:sythian_torrids",
-      "required": false
-    },
-    {
-      "id": "betternether:mushroom_forest",
-      "required": false
-    },
-    {
-      "id": "betternether:old_fungiwoods",
-      "required": false
-    },
-    {
-      "id": "betternether:nether_jungle",
-      "required": false
-    },
-    {
-      "id": "betternether:crimson_glowing_woods",
-      "required": false
-    },
-    {
-      "id": "betternether:crimson_pinewood",
       "required": false
     }
   ]

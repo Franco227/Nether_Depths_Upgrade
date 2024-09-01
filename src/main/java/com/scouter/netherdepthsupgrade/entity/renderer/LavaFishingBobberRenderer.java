@@ -2,7 +2,6 @@ package com.scouter.netherdepthsupgrade.entity.renderer;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.mojang.math.Axis;
 import com.scouter.netherdepthsupgrade.entity.entities.LavaFishingBobberEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -17,8 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.FishingRodItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix3f;
-import org.joml.Matrix4f;
 
 import static com.scouter.netherdepthsupgrade.NetherDepthsUpgrade.prefix;
 
@@ -38,15 +35,12 @@ public class LavaFishingBobberRenderer extends EntityRenderer<LavaFishingBobberE
             pMatrixStack.pushPose();
             pMatrixStack.scale(0.5F, 0.5F, 0.5F);
             pMatrixStack.mulPose(this.entityRenderDispatcher.cameraOrientation());
-            pMatrixStack.mulPose(Axis.YP.rotationDegrees(180.0F));
             PoseStack.Pose posestack$pose = pMatrixStack.last();
-            Matrix4f matrix4f = posestack$pose.pose();
-            Matrix3f matrix3f = posestack$pose.normal();
             VertexConsumer vertexconsumer = pBuffer.getBuffer(RENDER_TYPE);
-            vertex(vertexconsumer, matrix4f, matrix3f, pPackedLight, 0.0F, 0, 0, 1);
-            vertex(vertexconsumer, matrix4f, matrix3f, pPackedLight, 1.0F, 0, 1, 1);
-            vertex(vertexconsumer, matrix4f, matrix3f, pPackedLight, 1.0F, 1, 1, 0);
-            vertex(vertexconsumer, matrix4f, matrix3f, pPackedLight, 0.0F, 1, 0, 0);
+            vertex(vertexconsumer, posestack$pose, pPackedLight, 0.0F, 0, 0, 1);
+            vertex(vertexconsumer, posestack$pose, pPackedLight, 1.0F, 0, 1, 1);
+            vertex(vertexconsumer, posestack$pose, pPackedLight, 1.0F, 1, 1, 0);
+            vertex(vertexconsumer, posestack$pose, pPackedLight, 0.0F, 1, 0, 0);
             pMatrixStack.popPose();
             int i = player.getMainArm() == HumanoidArm.RIGHT ? 1 : -1;
             ItemStack itemstack = player.getMainHandItem();
@@ -105,22 +99,30 @@ public class LavaFishingBobberRenderer extends EntityRenderer<LavaFishingBobberE
         return (float) p_114691_ / (float) p_114692_;
     }
 
-    private static void vertex(VertexConsumer p_114712_, Matrix4f p_114713_, Matrix3f p_114714_, int p_114715_, float p_114716_, int p_114717_, int p_114718_, int p_114719_) {
-        p_114712_.vertex(p_114713_, p_114716_ - 0.5F, (float) p_114717_ - 0.5F, 0.0F).color(255, 255, 255, 255).uv((float) p_114718_, (float) p_114719_).overlayCoords(OverlayTexture.NO_OVERLAY).uv2(p_114715_).normal(p_114714_, 0.0F, 1.0F, 0.0F).endVertex();
+
+    private static void vertex(VertexConsumer pConsumer, PoseStack.Pose pPose, int pPackedLight, float pX, int pY, int pU, int pV) {
+        pConsumer.addVertex(pPose, pX - 0.5F, (float)pY - 0.5F, 0.0F)
+                .setColor(-1)
+                .setUv((float)pU, (float)pV)
+                .setOverlay(OverlayTexture.NO_OVERLAY)
+                .setLight(pPackedLight)
+                .setNormal(pPose, 0.0F, 1.0F, 0.0F);
     }
 
-    private static void stringVertex(float p_174119_, float p_174120_, float p_174121_, VertexConsumer p_174122_, PoseStack.Pose p_174123_, float p_174124_, float p_174125_) {
-        float f = p_174119_ * p_174124_;
-        float f1 = p_174120_ * (p_174124_ * p_174124_ + p_174124_) * 0.5F + 0.25F;
-        float f2 = p_174121_ * p_174124_;
-        float f3 = p_174119_ * p_174125_ - f;
-        float f4 = p_174120_ * (p_174125_ * p_174125_ + p_174125_) * 0.5F + 0.25F - f1;
-        float f5 = p_174121_ * p_174125_ - f2;
+    private static void stringVertex(
+            float pX, float pY, float pZ, VertexConsumer pConsumer, PoseStack.Pose pPose, float pStringFraction, float pNextStringFraction
+    ) {
+        float f = pX * pStringFraction;
+        float f1 = pY * (pStringFraction * pStringFraction + pStringFraction) * 0.5F + 0.25F;
+        float f2 = pZ * pStringFraction;
+        float f3 = pX * pNextStringFraction - f;
+        float f4 = pY * (pNextStringFraction * pNextStringFraction + pNextStringFraction) * 0.5F + 0.25F - f1;
+        float f5 = pZ * pNextStringFraction - f2;
         float f6 = Mth.sqrt(f3 * f3 + f4 * f4 + f5 * f5);
         f3 /= f6;
         f4 /= f6;
         f5 /= f6;
-        p_174122_.vertex(p_174123_.pose(), f, f1, f2).color(105, 84, 69,  255).normal(p_174123_.normal(), f3, f4, f5).endVertex();
+        pConsumer.addVertex(pPose, f, f1, f2).setColor(-16777216).setNormal(pPose, f3, f4, f5);
     }
 
     /**

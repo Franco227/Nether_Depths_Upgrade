@@ -1,5 +1,6 @@
 package com.scouter.netherdepthsupgrade.blocks;
 
+import com.mojang.serialization.MapCodec;
 import com.scouter.netherdepthsupgrade.blocks.entity.LavaGlassBlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -39,6 +40,11 @@ public class LavaGlassBlock extends BaseEntityBlock {
     }
 
     @Override
+    protected MapCodec<? extends BaseEntityBlock> codec() {
+        return null;
+    }
+
+    @Override
     public RenderShape getRenderShape(BlockState pState) {
         return RenderShape.MODEL;
     }
@@ -60,8 +66,6 @@ public class LavaGlassBlock extends BaseEntityBlock {
             blockEntity.setOcclusionShape(shape);
         }
         pLevel.sendBlockUpdated(pPos, pState, pState, Block.UPDATE_IMMEDIATE);
-
-
     }
 
     @Override

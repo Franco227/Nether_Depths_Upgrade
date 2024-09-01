@@ -26,7 +26,7 @@ public class NDUTags {
 
         }
         private static TagKey<Biome> fabrictag(String name){
-            return TagKey.create(Registries.BIOME, new ResourceLocation("fabric", name));
+            return TagKey.create(Registries.BIOME,  ResourceLocation.fromNamespaceAndPath("fabric", name));
 
         }
     }
