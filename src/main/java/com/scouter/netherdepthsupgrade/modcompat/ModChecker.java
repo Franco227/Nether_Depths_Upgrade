@@ -23,7 +23,7 @@ public class ModChecker {
             //loadModCompat(modid, () -> FarmersDelightCompat.setupCompat());
 
             modid = "byg";
-            loadModCompat(modid, () -> BiomesYoullGoCompat.setupCompatPreInit());
+            loadModCompat(modid, BiomesYoullGoCompat::setupCompatPreInit);
 
         }
         catch (Throwable e) {

@@ -29,7 +29,6 @@ public class NetherDepthsUpgrade implements ModInitializer {
 		// Proceed with mild caution.
 
 		Registration.init();
-		ClientSetup.init();
 		registerBrewingRecipes();
 		//GeckoLib.initialize();
 		ModChecker.setupModCompatPreInit();
